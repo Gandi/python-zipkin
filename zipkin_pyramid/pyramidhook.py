@@ -1,4 +1,5 @@
 from zipkin.models import Trace, Annotation
+from zipkin import local
 
 
 from .client import log
@@ -22,6 +23,7 @@ def wrap_request(endpoint):
                       endpoint=endpoint)
 
         setattr(request, 'trace', trace)
+        local().append(trace)
         trace.record(Annotation.server_recv())
         request.add_finished_callback(log_response(endpoint))
 

@@ -7,6 +7,7 @@ from pyramid.tweens import MAIN, EXCVIEW
 from .pyramidhook import wrap_request
 
 from .client import Client
+from .api import *
 
 
 def includeme(config):
