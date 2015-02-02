@@ -1,19 +1,24 @@
+import socket
+
 from pyramid.events import NewRequest
 from zipkin.models import Endpoint
+from pyramid.tweens import MAIN, EXCVIEW
 
 from .pyramidhook import wrap_request
 
-from .client import init
+from .client import Client
+
 
 def includeme(config):
     """Include the zipkin definitions"""
 
-    print config.registry.__dict__
+    settings = config.registry.settings
+    if 'zipkin.collector' not in settings:
+        return
     name = config.registry.__name__
 
-    endpoint = Endpoint("127.0.0.1", 0, name)
-    init("127.0.0.1", 9410)
+    ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
+    endpoint = Endpoint(ip, 0, name)
+    Client.configure(settings)
 
     config.add_subscriber(wrap_request(endpoint), NewRequest)
-
-
