@@ -2,6 +2,8 @@ from scribe import scribe
 from thrift.transport import TTransport, TSocket
 from thrift.protocol import TBinaryProtocol
 
+from zipkin.util import base64_thrift_formatter
+
 _client = None
 
 def init(host, port):

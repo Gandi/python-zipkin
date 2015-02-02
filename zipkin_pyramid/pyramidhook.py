@@ -1,5 +1,4 @@
 from zipkin.models import Trace, Annotation
-from zipkin.util import base64_thrift_formatter
 
 
 from .client import log
