@@ -1,7 +1,7 @@
 
 import threading
 
-class TraceStack():
+class TraceStack(object):
     def __init__(self):
         self.stack = []
         self.cur = None
