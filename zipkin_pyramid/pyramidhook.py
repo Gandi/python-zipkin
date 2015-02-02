@@ -1,7 +1,3 @@
-from scribe import scribe
-from thrift.transport import TTransport, TSocket
-from thrift.protocol import TBinaryProtocol
-
 from zipkin.models import Trace, Annotation
 from zipkin.util import base64_thrift_formatter
 

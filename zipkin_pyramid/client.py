@@ -1,3 +1,6 @@
+from scribe import scribe
+from thrift.transport import TTransport, TSocket
+from thrift.protocol import TBinaryProtocol
 
 _client = None
 
