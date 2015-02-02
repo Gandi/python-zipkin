@@ -13,6 +13,8 @@ requires = [
     'pyramid_chameleon',
     'pyramid_debugtoolbar',
     'waitress',
+    'thrift',
+    'facebook-scribe',
     ]
 
 setup(name='pyramid-zipkin',
