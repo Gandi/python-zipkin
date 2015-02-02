@@ -10,6 +10,8 @@ from .client import Client
 from .api import *
 
 
+from zipkin_requests import init as request_init
+
 def includeme(config):
     """Include the zipkin definitions"""
 
@@ -21,5 +23,7 @@ def includeme(config):
     ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
     endpoint = Endpoint(ip, 0, name)
     Client.configure(settings)
+
+    request_init()
 
     config.add_subscriber(wrap_request(endpoint), NewRequest)

@@ -1,8 +1,8 @@
 from requests.adapters import HTTPAdapter, DEFAULT_POOLSIZE, DEFAULT_POOLBLOCK, DEFAULT_RETRIES
 import requests as r
 
-from .models import Annotation
-from .util import hex_str
+from zipkin.models import Annotation
+from zipkin.util import hex_str
 
 class ZipkinHTTPAdapter(HTTPAdapter):
     def __init__(self, trace, name, pool_connections=DEFAULT_POOLSIZE,
@@ -34,13 +34,20 @@ class ZipkinHTTPAdapter(HTTPAdapter):
 
         return super(ZipkinHTTPAdapter, self).build_response(req, resp)
 
+import requests.sessions
+from zipkin import local
 
-def requests(request, name, endpoint=None):
-    s = r.session()
-    if endpoint:
-       endpoint = request.trace._endpoint.child(endpoint)
+def _func(init):
+    def func(self, *args, **kwargs):
+        init(self, *args, **kwargs)
+        trace = local().child('requests')
+        name = 'requests'
+        endpoint = trace._endpoint
+        self.mount('http://', ZipkinHTTPAdapter(trace, name, endpoint=endpoint))
+        self.mount('https://', ZipkinHTTPAdapter(trace, name, endpoint=endpoint))
+    return func
 
-    s.mount('http://', ZipkinHTTPAdapter(request.trace, name, endpoint=endpoint))
-    s.mount('https://', ZipkinHTTPAdapter(request.trace, name, endpoint=endpoint))
+def init():
+    old_init = requests.sessions.Session.__init__
+    requests.sessions.Session.__init__ = _func(old_init)
 
-    return s
