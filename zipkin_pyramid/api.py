@@ -8,14 +8,14 @@ def trace(name):
         return trace(name.__name__)(name)
 
     def func_decorator(func):
-        def wrapper(**kwargs):
+        def wrapper(*args):
             trace = local().child(name)
 
             try:
                 annotation = Annotation.client_send()
 
                 trace.record(annotation)
-                return func(**kwargs)
+                return func(*args)
             finally:
                 annotation = Annotation.client_recv()
                 trace.record(annotation)
