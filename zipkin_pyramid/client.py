@@ -9,6 +9,7 @@ from zipkin.util import base64_thrift_formatter
 
 logger = logging.getLogger('gandi.whateber')
 
+
 class Client(object):
 
     host = 'localhost'
@@ -33,19 +34,30 @@ class Client(object):
             transport.open()
         except TTransport.TTransportException:
             cls._client = None
-            logger.exception("Can't connect to zipkin collector")
+            logger.error("Can't connect to zipkin collector %s:%d"
+                         % (cls.host, cls.port))
+        except Exception:
+            cls._client = None
+            logger.exception("Can't connect to zipkin collector %s:%d"
+                             % (cls.host, cls.port))
         return cls._client
 
     @classmethod
     def log(cls, trace):
         if cls.ensure_connection():
             messages = [base64_thrift_formatter(t, t.annotations) for t in trace.children()]
-            log_entries = [scribe.LogEntry('zipkin', message) for message in messages]
+            log_entries = [scribe.LogEntry('zipkin', message)for message in messages]
 
             try:
                 cls._client.Log(messages=log_entries)
-            except TTransport.TTransportException:
+            except EOFError:
                 cls._client = None
+                logger.error("EOFError while logging a trace on zipkin collector %s:%d"
+                             % (cls.host, cls.port))
+            except Exception:
+                cls._client = None
+                logger.exception("Unknown Exception while logging a trace on zipkin collector %s:%d"
+                                 % (cls.host, cls.port))
 
 
 def log(trace):
