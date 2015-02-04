@@ -46,7 +46,7 @@ def zipkin_init(endpoint = None):
     global _endpoint
     if not endpoint:
         ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
-        _endpoint = Endpoint(ip, 0, "pyramidzipkin")
+        _endpoint = Endpoint(ip, 0, "Celery")
     else:
         _endpoint = endpoint
 
