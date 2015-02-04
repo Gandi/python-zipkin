@@ -6,7 +6,7 @@ from zipkin import local
 from zipkin.models import Annotation, Endpoint, Trace
 from zipkin.util import hex_str, int_or_none
 
-from zipkin_pyramid.client import log
+from zipkin.client import log
 
 
 _endpoint = None
@@ -46,12 +46,10 @@ def zipkin_init(endpoint = None):
     global _endpoint
     if not endpoint:
         ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
-        _endpoint = Endpoint(ip, 0, "pyramidzipkin")
+        _endpoint = Endpoint(ip, 0, "Celery")
     else:
         _endpoint = endpoint
 
     before_task_publish.connect(task_send_handler)
     task_prerun.connect(task_prerun_handler)
     task_postrun.connect(task_postrun_handler)
-
-
