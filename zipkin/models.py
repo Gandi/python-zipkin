@@ -40,13 +40,17 @@ class Trace(object):
                 a.endpoint = self._endpoint
         self.annotations.extend(annotations)
 
-    def child(self, name, endpoint):
+    def child_noref(self, name, endpoint=None):
         if endpoint is not None:
             e = endpoint
         else:
             e = self._endpoint
         trace = self.__class__(
                     name, trace_id=self.trace_id, parent_span_id=self.span_id, endpoint=e)
+        return trace
+
+    def child(self, name, endpoint = None):
+        trace = self.child_noref(name, endpoint)
         self._children.append(trace)
         return trace
 
