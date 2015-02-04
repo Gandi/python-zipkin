@@ -8,6 +8,13 @@ from thrift.transport import TTransport
 from ._thrift.zipkinCore import ttypes
 
 
+def int_or_none(val):
+    if val is None:
+        return None
+
+    return int(val, 16)
+
+
 def hex_str(n):
     return '%0.16x' % (n,)
 

@@ -1,15 +1,8 @@
-from zipkin.models import Trace, Annotation
 from zipkin import local
-
+from zipkin.models import Trace, Annotation
+from zipkin.util import int_or_none
 
 from .client import log
-
-
-def int_or_none(val):
-    if val is None:
-        return None
-
-    return int(val, 16)
 
 
 def wrap_request(endpoint):
