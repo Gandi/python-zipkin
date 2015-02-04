@@ -7,7 +7,6 @@ class TraceStack(object):
         self.cur = None
 
     def child(self, name, endpoint = None):
-        print "child", self.stack
         trace = self.cur.child(name, endpoint)
         self.stack.append(trace)
         self.cur = trace
@@ -16,7 +15,6 @@ class TraceStack(object):
     def append(self, trace):
         self.stack.append(trace)
         self.cur = trace
-        print "append", self.stack
 
     def pop(self):
         trace = self.stack.pop()
@@ -39,5 +37,4 @@ def local():
     global data
     if not getattr(data, 'trace', None):
         data.trace = TraceStack()
-    print data.trace
     return data.trace
