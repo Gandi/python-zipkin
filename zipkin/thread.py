@@ -1,5 +1,7 @@
 import threading
 
+data = None
+
 class TraceStack(object):
     def __init__(self):
         self.stack = []
@@ -30,10 +32,12 @@ class TraceStack(object):
         return self.cur
 
 
-data = threading.local()
 
 def local():
     global data
+    if not data:
+        data = threading.local()
+
     if not getattr(data, 'trace', None):
         data.trace = TraceStack()
     return data.trace
