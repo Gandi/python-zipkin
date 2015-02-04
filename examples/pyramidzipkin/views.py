@@ -7,7 +7,7 @@ from zipkin_pyramid import trace
 
 import requests
 
-from tasks import add
+from .tasks import add
 
 def root(request):
     headers = {}
