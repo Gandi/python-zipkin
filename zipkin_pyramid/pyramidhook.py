@@ -1,8 +1,7 @@
 from zipkin import local
 from zipkin.models import Trace, Annotation
 from zipkin.util import int_or_none
-
-from .client import log
+from zipkin.client import log
 
 
 def wrap_request(endpoint):

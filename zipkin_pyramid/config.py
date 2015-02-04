@@ -2,7 +2,7 @@ import socket
 
 from pyramid.events import NewRequest
 
-from zipkin import configure
+from zipkin.config import configure
 from zipkin.models import Endpoint
 from zipkin.client import Client
 from zipkin_requests import init as request_init
