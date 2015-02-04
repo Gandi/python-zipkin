@@ -1,25 +1,41 @@
 import os
-
+import re
 from setuptools import setup, find_packages
 
+name='zipkin'
 here = os.path.abspath(os.path.dirname(__file__))
-with open(os.path.join(here, 'README.txt')) as f:
+with open(os.path.join(here, 'README.rst')) as f:
     README = f.read()
-with open(os.path.join(here, 'CHANGES.txt')) as f:
+with open(os.path.join(here, 'CHANGES.rst')) as f:
     CHANGES = f.read()
+with open(os.path.join(here, name, '__init__.py')) as version:
+    VERSION = re.compile(r".*__version__ = '(.*?)'",
+                         re.S).match(version.read()).group(1)
 
 requires = [
-    'pyramid',
-    'pyramid_chameleon',
-    'pyramid_debugtoolbar',
-    'waitress',
     'thrift',
     'facebook-scribe',
     ]
 
-setup(name='pyramid-zipkin',
-      version='0.0',
-      description='pyramid-zipkin',
+test_requires = ['nose']
+
+extras_require = {
+    'pyramid': [
+        'pyramid',
+    ],
+    'celery': [
+        'celery',
+    ],
+    'requests': [
+        'requests',
+    ],
+    'dev': ['pyramid', 'celery', 'requests'],
+    'test': test_requires,
+}
+
+setup(name=name,
+      version=VERSION,
+      description='zipkin',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
         "Programming Language :: Python",
@@ -35,10 +51,7 @@ setup(name='pyramid-zipkin',
       include_package_data=True,
       zip_safe=False,
       install_requires=requires,
-      tests_require=requires,
-      test_suite="pyramidzipkin",
-      entry_points="""\
-      [paste.app_factory]
-      main = pyramidzipkin:main
-      """,
+      extras_require=extras_require,
+      tests_require=test_requires,
+      test_suite='{name}.tests'.format(name=name),
       )
