@@ -7,12 +7,14 @@ from zipkin_pyramid import trace
 
 import requests
 
+from tasks import add
 
 def root(request):
     headers = {}
     subfunc()
     sleep()
-    return Response('hello zipkin, %s' % str(headers))
+    ret = add.delay(4, 4).get()
+    return Response('hello zipkin, %s %d' % (str(headers), ret))
 
 def sleep_for(request):
     t = int(request.matchdict['time'])
