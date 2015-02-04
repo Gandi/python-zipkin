@@ -12,13 +12,13 @@ def trace(name):
             trace = local().child(name)
 
             try:
-                annotation = Annotation.client_send()
+                annotation = Annotation.server_recv()
 
                 trace.record(annotation)
                 return func(*args)
             finally:
-                annotation = Annotation.client_recv()
-                trace.record(annotation)
+                trace.record(Annotation.server_send())
+
                 local().pop()
 
         return wrapper
