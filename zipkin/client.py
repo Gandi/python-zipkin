@@ -7,7 +7,7 @@ from thrift.protocol import TBinaryProtocol
 from zipkin.util import base64_thrift_formatter
 
 
-logger = logging.getLogger('gandi.whateber')
+logger = logging.getLogger(__name__)
 
 
 class Client(object):
