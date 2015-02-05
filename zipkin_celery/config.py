@@ -1,3 +1,4 @@
+
 from zipkin import local
 from zipkin.models import Annotation, Trace
 from zipkin.util import hex_str, int_or_none
@@ -7,6 +8,7 @@ from zipkin.client import log
 
 _endpoint = None
 
+
 def task_send_handler(body, exchange, routing_key, headers, **kwargs):
     trace = local().current
     forwarded_trace = trace.child_noref("subservice")
@@ -15,6 +17,7 @@ def task_send_handler(body, exchange, routing_key, headers, **kwargs):
     headers['X-B3-SpanId'] = hex_str(forwarded_trace.span_id)
     if forwarded_trace.parent_span_id is not None:
         headers['X-B3-ParentSpanId'] = hex_str(forwarded_trace.parent_span_id)
+
 
 def task_prerun_handler(task_id, task, **kwargs):
     global _endpoint
@@ -36,4 +39,3 @@ def task_postrun_handler(task_id, task, **kwargs):
     trace.record(Annotation.server_send())
 
     log(trace)
-
