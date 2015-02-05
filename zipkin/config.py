@@ -1,4 +1,3 @@
-import socket
 import logging
 
 from zipkin.models import Endpoint
@@ -10,8 +9,7 @@ log = logging.getLogger(__name__)
 def configure(name, settings, use_requests=True, use_celery=True):
     """Include the zipkin definitions"""
 
-    ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
-    endpoint = Endpoint(ip, 0, name)
+    endpoint = Endpoint(name)
     Client.configure(settings)
 
     if use_requests:

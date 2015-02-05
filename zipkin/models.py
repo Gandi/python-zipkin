@@ -1,16 +1,21 @@
 import math
 import time
+import socket
 
 from .util import uniq_id
 from ._thrift.zipkinCore import constants
 
+
 class Endpoint(object):
-    def __init__(self, ip, port, service_name):
-        """
-        @param ip: C{str} ip address
-        @param port: C{int} port number
-        @param service_name: C{str} service_name
-        """
+    """
+    :param ip: C{str} ip address
+    :param port: C{int} port number
+    :param service_name: C{str} service_name
+    """
+
+    def __init__(self, service_name, ip=None, port=0):
+        if not ip:
+            ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
         self.ip = ip
         self.port = port
         self.service_name = service_name
@@ -104,7 +109,3 @@ class Annotation(object):
     @classmethod
     def bytes(cls, name, value):
         return cls(name, value, 'bytes')
-
-
-
-

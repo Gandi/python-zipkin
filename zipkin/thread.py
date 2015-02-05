@@ -7,7 +7,7 @@ class TraceStack(object):
         self.stack = []
         self.cur = None
 
-    def child(self, name, endpoint = None):
+    def child(self, name, endpoint=None):
         trace = self.cur.child(name, endpoint)
         self.stack.append(trace)
         self.cur = trace
@@ -30,7 +30,6 @@ class TraceStack(object):
     @property
     def current(self):
         return self.cur
-
 
 
 def local():

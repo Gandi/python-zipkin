@@ -6,7 +6,7 @@ from zipkin.util import hex_str, int_or_none
 from zipkin.client import log
 
 
-_endpoint = None
+endpoint = None
 
 
 def task_send_handler(body, exchange, routing_key, headers, **kwargs):
@@ -20,14 +20,13 @@ def task_send_handler(body, exchange, routing_key, headers, **kwargs):
 
 
 def task_prerun_handler(task_id, task, **kwargs):
-    global _endpoint
     request = task.request
 
     trace = Trace('Task %r' % task.name,
                   int_or_none(request.headers.get('X-B3-TraceId', None)),
                   int_or_none(request.headers.get('X-B3-SpanId', None)),
                   int_or_none(request.headers.get('X-B3-ParentSpanId', None)),
-                  endpoint=_endpoint)
+                  endpoint=endpoint)
 
     setattr(request, 'trace', trace)
     local().append(trace)
