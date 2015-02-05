@@ -49,6 +49,7 @@ except ImportError:
     # requests < 1.0.0
     pass
 
+
 def _func(init):
     def func(self, *args, **kwargs):
         init(self, *args, **kwargs)
@@ -61,7 +62,6 @@ def _func(init):
     return func
 
 
-def init():
+def bind():
     old_init = requests.sessions.Session.__init__
     requests.sessions.Session.__init__ = _func(old_init)
-

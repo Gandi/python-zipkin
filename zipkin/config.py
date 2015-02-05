@@ -16,13 +16,13 @@ def configure(name, settings, use_requests=True, use_celery=True):
 
     if use_requests:
         try:
-            from zipkin.binding.requests import init as request_init
-            request_init()
+            from zipkin.binding.requests import bind as bind_requests
+            bind_requests()
         except ImportError:
             log.warn('package requests not installed')
 
     if use_celery:
-        from zipkin.binding.celery import zipkin_init as celery_init
-        celery_init(endpoint)
+        from zipkin.binding.celery import bind as bind_celery
+        bind_celery(endpoint)
 
     return endpoint

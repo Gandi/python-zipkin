@@ -16,7 +16,7 @@ log = logging.getLogger(__name__)
 
 if _use_celery:
 
-    def zipkin_init(endpoint=None):
+    def bind(endpoint=None):
         if not endpoint:
             ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
             _endpoint = Endpoint(ip, 0, "Celery")
@@ -34,5 +34,5 @@ else:
 
     # most likely, celery is not available
     log.warn('package celery not installed')
-    def zipkin_init(*args, **kwargs):
+    def bind(*args, **kwargs):
         pass
