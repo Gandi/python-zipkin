@@ -1,15 +1,17 @@
+from __future__ import print_function
+import sys
 
-from sqlalchemy.ext.declarative import declarative_base
+try:
+    print('>'*80, file=sys.stderr)
+    from .impl import bind
+except ImportError as exc:
+    import logging
+    print(exc, file=sys.stderr)
+    import traceback
+    traceback.print_stack()
+    logging.getLogger(__name__).warn('SQLAlchemy not installed')
 
-from sqlalchemy.orm import (
-    scoped_session,
-    sessionmaker,
-    )
+    def bind(*args, **kwargs):
+        pass
 
-DBSession = None
-Base = declarative_base()
-
-if not DBSession:
-    DBSession = scoped_session(sessionmaker())
-
-
+    raise
