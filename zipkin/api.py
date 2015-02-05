@@ -1,21 +1,24 @@
 
 from zipkin.models import Annotation
 
-from zipkin import local
+from .thread import local
+
 
 def trace(name):
+    """ A decorator that trace the decorated function """
+
     if hasattr(name, '__call__'):
         return trace(name.__name__)(name)
 
     def func_decorator(func):
-        def wrapper(*args):
+        def wrapper(*args, **kwargs):
             trace = local().child(name)
 
             try:
                 annotation = Annotation.server_recv()
 
                 trace.record(annotation)
-                return func(*args)
+                return func(*args, **kwargs)
             finally:
                 trace.record(Annotation.server_send())
 
@@ -23,5 +26,3 @@ def trace(name):
 
         return wrapper
     return func_decorator
-
-
