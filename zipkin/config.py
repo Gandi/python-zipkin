@@ -3,6 +3,7 @@ import logging
 
 from zipkin.models import Endpoint
 from zipkin.client import Client
+from zipkin_celery import zipkin_init as celery_init
 
 log = logging.getLogger(__name__)
 
@@ -22,10 +23,6 @@ def configure(name, settings, use_requests=True, use_celery=True):
             log.warn('package requests not installed')
 
     if use_celery:
-        try:
-            from zipkin_celery import zipkin_init as celery_init
-            celery_init(endpoint)
-        except ImportError:
-            log.warn('package celery not installed')
+        celery_init(endpoint)
 
     return endpoint
