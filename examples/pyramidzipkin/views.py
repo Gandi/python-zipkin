@@ -3,7 +3,7 @@ import time
 from pyramid.view import view_config
 from pyramid.response import Response
 
-from zipkin_pyramid import trace
+from zipkin.binding.pyramid import trace
 
 import requests
 

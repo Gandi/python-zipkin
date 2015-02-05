@@ -23,7 +23,7 @@ def task_prerun_handler(task_id, task, **kwargs):
     global _endpoint
     request = task.request
 
-    trace = Trace("celery",
+    trace = Trace('Task %r' % task.name,
                   int_or_none(request.headers.get('X-B3-TraceId', None)),
                   int_or_none(request.headers.get('X-B3-SpanId', None)),
                   int_or_none(request.headers.get('X-B3-ParentSpanId', None)),

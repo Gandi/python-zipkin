@@ -1,12 +1,11 @@
 import time
 
 from celery import Celery
-from celery.signals import before_task_publish, task_prerun, task_postrun
 
-from zipkin_celery import zipkin_init
+from zipkin.binding.celery import zipkin_init
 from zipkin.client import Client
 
-from zipkin_pyramid import trace
+from zipkin.api import trace
 
 #if __name__ == 'main':
 #    Client.configure({'zipkin.collector': '127.0.0.1'})

@@ -1,11 +1,6 @@
-import socket
-
 from pyramid.events import NewRequest
 
 from zipkin.config import configure
-from zipkin.models import Endpoint
-from zipkin.client import Client
-from zipkin_requests import init as request_init
 from .pyramidhook import wrap_request
 
 

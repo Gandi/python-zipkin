@@ -2,7 +2,7 @@ import os
 import re
 from setuptools import setup, find_packages
 
-name='zipkin'
+name = 'zipkin'
 here = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(here, 'README.rst')) as f:
     README = f.read()
@@ -37,16 +37,12 @@ setup(name=name,
       version=VERSION,
       description='zipkin',
       long_description=README + '\n\n' + CHANGES,
-      classifiers=[
-        "Programming Language :: Python",
-        "Framework :: Pyramid",
-        "Topic :: Internet :: WWW/HTTP",
-        "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
-        ],
-      author='',
-      author_email='',
+      classifiers=['Programming Language :: Python',
+                   ],
+      author='Gandi',
+      author_email='feedback@gandi.net',
       url='',
-      keywords='web pyramid pylons',
+      keywords='zipkin metrics trace',
       packages=find_packages(),
       include_package_data=True,
       zip_safe=False,
