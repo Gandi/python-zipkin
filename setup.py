@@ -24,7 +24,7 @@ extras_require = {
         'pyramid',
     ],
     'celery': [
-        'celery',
+        'celery >= 3.1',
     ],
     'requests': [
         'requests',
