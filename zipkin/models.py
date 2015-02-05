@@ -14,8 +14,6 @@ class Endpoint(object):
         self.ip = ip
         self.port = port
         self.service_name = service_name
-    def child(self, name):
-        return self.__class__(self.ip, self.port, name)
 
 #TODO
 #__eq__, __ne__, __repr__
