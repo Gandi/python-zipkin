@@ -29,7 +29,9 @@ class Client(object):
         try:
             socket = TSocket.TSocket(host=cls.host, port=cls.port)
             transport = TTransport.TFramedTransport(socket)
-            protocol = TBinaryProtocol.TBinaryProtocol(trans=transport, strictRead=False, strictWrite=False)
+            protocol = TBinaryProtocol.TBinaryProtocol(trans=transport,
+                                                       strictRead=False,
+                                                       strictWrite=False)
             cls._client = scribe.Client(protocol)
             transport.open()
         except TTransport.TTransportException:
@@ -45,19 +47,22 @@ class Client(object):
     @classmethod
     def log(cls, trace):
         if cls.ensure_connection():
-            messages = [base64_thrift_formatter(t, t.annotations) for t in trace.children()]
-            log_entries = [scribe.LogEntry('zipkin', message)for message in messages]
+            messages = [base64_thrift_formatter(t, t.annotations)
+                        for t in trace.children()]
+            log_entries = [scribe.LogEntry('zipkin', message)
+                           for message in messages]
 
             try:
                 cls._client.Log(messages=log_entries)
             except EOFError:
                 cls._client = None
-                logger.error("EOFError while logging a trace on zipkin collector %s:%d"
-                             % (cls.host, cls.port))
+                logger.error('EOFError while logging a trace on zipkin '
+                             'collector %s:%d' % (cls.host, cls.port))
             except Exception:
                 cls._client = None
-                logger.exception("Unknown Exception while logging a trace on zipkin collector %s:%d"
-                                 % (cls.host, cls.port))
+                logger.exception('Unknown Exception while logging a trace on '
+                                 'zipkin collector %s:%d' % (cls.host,
+                                                             cls.port))
 
 
 def log(trace):

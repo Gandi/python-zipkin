@@ -79,11 +79,11 @@ class Trace(object):
             e = endpoint
         else:
             e = self._endpoint
-        trace = self.__class__(
-                    name, trace_id=self.trace_id, parent_span_id=self.span_id, endpoint=e)
+        trace = self.__class__(name, trace_id=self.trace_id,
+                               parent_span_id=self.span_id, endpoint=e)
         return trace
 
-    def child(self, name, endpoint = None):
+    def child(self, name, endpoint=None):
         trace = self.child_noref(name, endpoint)
         self._children.append(trace)
         return trace
@@ -93,18 +93,18 @@ class Trace(object):
 
 
 class Annotation(object):
+    """
+    :param name: C{str} name of this annotation.
+
+    :param value: A value of the appropriate type based on
+        C{annotation_type}.
+
+    :param annotation_type: C{str} the expected type of our C{value}.
+
+    :param endpoint: An optional L{IEndpoint} provider to associate with
+        this annotation or C{None}
+    """
     def __init__(self, name, value, annotation_type, endpoint=None):
-        """
-        @param name: C{str} name of this annotation.
-
-        @param value: A value of the appropriate type based on
-            C{annotation_type}.
-
-        @param annotation_type: C{str} the expected type of our C{value}.
-
-        @param endpoint: An optional L{IEndpoint} provider to associate with
-            this annotation or C{None}
-        """
         self.name = name
         self.value = value
         self.annotation_type = annotation_type
