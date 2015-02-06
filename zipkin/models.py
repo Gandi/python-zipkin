@@ -1,22 +1,58 @@
 import math
 import time
+import socket
 
 from .util import uniq_id
 from ._thrift.zipkinCore import constants
 
+
 class Endpoint(object):
-    def __init__(self, ip, port, service_name):
-        """
-        @param ip: C{str} ip address
-        @param port: C{int} port number
-        @param service_name: C{str} service_name
-        """
+    """
+    :param ip: C{str} ip address
+    :param port: C{int} port number
+    :param service_name: C{str} service_name
+    """
+
+    def __init__(self, service_name, ip=None, port=0):
+        if not ip:
+            ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
         self.ip = ip
         self.port = port
         self.service_name = service_name
 
 #TODO
 #__eq__, __ne__, __repr__
+
+
+class TraceStack(object):
+    def __init__(self):
+        self.stack = []
+        self.cur = None
+
+    def child(self, name, endpoint=None):
+        trace = self.cur.child(name, endpoint)
+        self.stack.append(trace)
+        self.cur = trace
+        return trace
+
+    def append(self, trace):
+        self.stack.append(trace)
+        self.cur = trace
+
+    def pop(self):
+        trace = self.stack.pop()
+        try:
+            cur = self.stack.pop()
+            self.stack.append(cur)
+            self.cur = cur
+        except:
+            self.cur = None
+        return trace
+
+    @property
+    def current(self):
+        return self.cur
+
 
 class Trace(object):
     def __init__(self, name, trace_id=None, span_id=None,
@@ -104,7 +140,3 @@ class Annotation(object):
     @classmethod
     def bytes(cls, name, value):
         return cls(name, value, 'bytes')
-
-
-
-

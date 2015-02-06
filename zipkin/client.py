@@ -17,10 +17,10 @@ class Client(object):
     _client = None
 
     @classmethod
-    def configure(cls, settings):
-        cls.host = settings['zipkin.collector']
-        if 'zipkin.collector.port' in settings:
-            cls.port = int(settings['zipkin.collector.port'])
+    def configure(cls, settings, prefix):
+        cls.host = settings[prefix + 'collector']
+        if prefix + 'collector.port' in settings:
+            cls.port = int(settings[prefix + 'collector.port'])
 
     @classmethod
     def ensure_connection(cls):

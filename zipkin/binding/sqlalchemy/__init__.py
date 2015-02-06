@@ -1,15 +1,10 @@
+try:
+    from .impl import bind
+except ImportError as exc:
+    import logging
+    logging.getLogger(__name__).warn('SQLAlchemy not installed')
 
-from sqlalchemy.ext.declarative import declarative_base
+    def bind(*args, **kwargs):
+        pass
 
-from sqlalchemy.orm import (
-    scoped_session,
-    sessionmaker,
-    )
-
-DBSession = None
-Base = declarative_base()
-
-if not DBSession:
-    DBSession = scoped_session(sessionmaker())
-
-
+    raise

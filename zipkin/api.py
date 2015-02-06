@@ -1,7 +1,7 @@
-
-from zipkin.models import Annotation
-
+from .models import Annotation
 from .thread import local
+
+__ALL__ = ['trace', 'get_current_trace']
 
 
 def trace(name):
@@ -26,3 +26,11 @@ def trace(name):
 
         return wrapper
     return func_decorator
+
+
+def get_current_trace():
+    return local().current
+
+
+def stack_trace(trace):
+    return local().append(trace)
