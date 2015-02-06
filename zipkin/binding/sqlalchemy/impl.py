@@ -1,5 +1,3 @@
-from __future__ import print_function
-import sys
 import logging
 
 
@@ -17,10 +15,8 @@ def bind(engine, endpoint=None):
     if not endpoint:
         endpoint = Endpoint("SQL")
 
-    print('!'*80, file=sys.stderr)
     events.endpoints[engine] = endpoint
     event.listen(engine, 'before_cursor_execute', events.before_cursor_execute)
     event.listen(engine, 'after_cursor_execute', events.after_cursor_execute)
     event.listen(engine, 'dbapi_error', events.dbapi_error)
-    print('!'*80, file=sys.stderr)
     log.info('zipkin bound to SQLALchemy')
