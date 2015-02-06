@@ -30,3 +30,7 @@ def trace(name):
 
 def get_current_trace():
     return local().current
+
+
+def stack_trace(trace):
+    return local().append(trace)
