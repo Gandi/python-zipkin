@@ -12,13 +12,13 @@ logger = logging.getLogger(__name__)
 
 class Client(object):
 
-    host = 'localhost'
+    host = None
     port = 9410
     _client = None
 
     @classmethod
     def configure(cls, settings, prefix):
-        cls.host = settings[prefix + 'collector']
+        cls.host = settings.get(prefix + 'collector')
         if prefix + 'collector.port' in settings:
             cls.port = int(settings[prefix + 'collector.port'])
 
@@ -45,6 +45,9 @@ class Client(object):
 
     @classmethod
     def log(cls, trace):
+        if not cls.host:
+            logger.debug('Zipkin tracing is disabled')
+            return
         client = cls.get_connection()
         if client:
             messages = [base64_thrift_formatter(t, t.annotations)
