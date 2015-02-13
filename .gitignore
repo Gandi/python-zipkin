@@ -11,3 +11,4 @@ activate
 dist/*
 build/*
 venv*
+docs/_build/*
