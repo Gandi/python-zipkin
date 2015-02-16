@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.3 (2015-02-16)
+----------------
+
+-  Make the service name configurable for pyramid application
+
+
 0.2 (2015-02-16)
 ----------------
 
