@@ -12,17 +12,20 @@ def trace(name):
 
     def func_decorator(func):
         def wrapper(*args, **kwargs):
-            trace = local().child(name)
 
             try:
-                annotation = Annotation.server_recv()
-
-                trace.record(annotation)
+                try:
+                    recording = True
+                    trace = local().child(name)
+                    annotation = Annotation.server_recv()
+                    trace.record(annotation)
+                except Exception:
+                    recording = False
                 return func(*args, **kwargs)
             finally:
-                trace.record(Annotation.server_send())
-
-                local().pop()
+                if recording:
+                    trace.record(Annotation.server_send())
+                    local().pop()
 
         return wrapper
     return func_decorator
