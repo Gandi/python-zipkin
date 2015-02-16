@@ -3,6 +3,7 @@ Section: utils
 Priority: optional
 Maintainer: Arthur Gautier <baloo@gandi.net>
 Build-Depends: debhelper (>= 8), python-all, python3, python-setuptools, python3-setuptools
+X-Python-Version: >= 2.6
 Standards-Version: 3.8.5
 Homepage: https://gitlab.corp.gandi.net/devops/python-zipkin
 
@@ -14,6 +15,6 @@ Description: Zipkin client for python
 
 Package: python3-zipkin
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, python3-facebook-scribe, python3-thrift
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python3:Depends}, python3-facebook-scribe, python3-thrift
 Description: Zipkin client for python
  Client for twitter distributed tracing framework
