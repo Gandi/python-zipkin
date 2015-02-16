@@ -14,7 +14,7 @@ def includeme(config):
                                          'is active but not configured. '
                                          'Check the doc.')
         return
-    name = config.registry.__name__
+    name = settings.get('zipkin.service_name', config.registry.__name__)
     endpoint = configure(name, settings)
 
     config.add_subscriber(wrap_request(endpoint), NewRequest)
