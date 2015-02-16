@@ -1,5 +1,5 @@
 
-__version__ = '0.1'
+__version__ = '0.2'
 
 # export the API here
 from .api import trace, get_current_trace, stack_trace
