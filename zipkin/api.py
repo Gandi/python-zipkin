@@ -1,7 +1,7 @@
 from .models import Annotation
 from .thread import local
 
-__ALL__ = ['trace', 'get_current_trace']
+__all__ = ['trace', 'get_current_trace']
 
 
 def trace(name):
