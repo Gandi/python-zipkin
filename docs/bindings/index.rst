@@ -8,3 +8,4 @@ Bindings
    sqlalchemy
    requests
    celery
+   flask

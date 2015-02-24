@@ -29,7 +29,10 @@ extras_require = {
     'requests': [
         'requests',
     ],
-    'dev': ['pyramid', 'celery', 'requests', 'sphinx'],
+    'flask': [
+        'flask', 'blinker',
+    ],
+    'dev': ['pyramid', 'celery', 'requests', 'flask', 'sphinx'],
     'test': test_requires,
 }
 
