@@ -76,7 +76,7 @@ class TraceStack(object):
             self.lock.acquire()
 
             if self.cur is None:
-                raise IndexError, "pop from an empty stack"
+                raise IndexError("pop from an empty stack")
 
             # pop is safe here, cur is not none, current stack can't be empty
             trace = self.stack.pop()
