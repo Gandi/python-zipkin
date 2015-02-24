@@ -1,6 +1,8 @@
 import math
+import six
 import time
 import socket
+from threading import Lock
 
 from .util import uniq_id
 from ._thrift.zipkinCore import constants
@@ -29,25 +31,64 @@ class TraceStack(object):
         self.stack = []
         self.cur = None
 
+        # Locking is required, as stack and cur should mutate at the same time
+        self.lock = Lock()
+
     def child(self, name, endpoint=None):
-        trace = self.cur.child(name, endpoint)
-        self.stack.append(trace)
-        self.cur = trace
-        return trace
+        assert isinstance(name, six.string_types), \
+            "name parameter should be a string"
+        assert isinstance(endpoint, Endpoint) or endpoint is None, \
+            "endpoint parameter should be an Endpoint"
+
+        try:
+            trace = self.cur.child(name, endpoint)
+            self.lock.acquire()
+            self.stack.append(trace)
+            self.cur = trace
+            return trace
+        finally:
+            self.lock.release()
+
+    def replace(self, trace):
+        assert isinstance(trace, Trace), \
+            "trace parameter should be of type Trace"
+
+        try:
+            self.lock.acquire()
+            self.stack = [trace]
+            self.cur = trace
+        finally:
+            self.lock.release()
 
     def append(self, trace):
-        self.stack.append(trace)
-        self.cur = trace
+        assert isinstance(trace, Trace), \
+            "trace parameter should be of type Trace"
+
+        try:
+            self.lock.acquire()
+            self.stack.append(trace)
+            self.cur = trace
+        finally:
+            self.lock.release()
 
     def pop(self):
-        trace = self.stack.pop()
         try:
-            cur = self.stack.pop()
-            self.stack.append(cur)
-            self.cur = cur
-        except:
-            self.cur = None
-        return trace
+            self.lock.acquire()
+
+            if self.cur is None:
+                raise IndexError, "pop from an empty stack"
+
+            # pop is safe here, cur is not none, current stack can't be empty
+            trace = self.stack.pop()
+            try:
+                cur = self.stack.pop()
+                self.stack.append(cur)
+                self.cur = cur
+            except:
+                self.cur = None
+            return trace
+        finally:
+            self.lock.release()
 
     @property
     def current(self):
@@ -57,6 +98,7 @@ class TraceStack(object):
 class Trace(object):
     def __init__(self, name, trace_id=None, span_id=None,
                  parent_span_id=None, endpoint=None):
+        assert isinstance(name, six.string_types), "name parameter should be a string"
         self.name = name
         self.trace_id = trace_id or uniq_id()
         self.span_id = span_id or uniq_id()

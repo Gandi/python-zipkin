@@ -1,5 +1,6 @@
 import os
 import re
+import sys
 from setuptools import setup, find_packages
 
 name = 'zipkin'
@@ -17,7 +18,10 @@ requires = [
     'facebook-scribe',
     ]
 
-test_requires = ['nose']
+tests_require = []
+
+if sys.version_info[:2] < (2, 7):
+    tests_require.append('unittest2')
 
 extras_require = {
     'pyramid': [
@@ -33,7 +37,7 @@ extras_require = {
         'flask', 'blinker',
     ],
     'dev': ['pyramid', 'celery', 'requests', 'flask', 'sphinx'],
-    'test': test_requires,
+    'test': tests_require,
 }
 
 setup(name=name,
@@ -51,6 +55,6 @@ setup(name=name,
       zip_safe=False,
       install_requires=requires,
       extras_require=extras_require,
-      tests_require=test_requires,
+      tests_require=tests_require,
       test_suite='{name}.tests'.format(name=name),
       )
