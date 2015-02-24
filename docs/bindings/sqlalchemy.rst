@@ -1,10 +1,10 @@
 SQLAlchemy
 ==========
 
-To trace your sql request, you have to bing SQLAlchemy engine to a zipkin
+To trace your sql request, you have to bind SQLAlchemy engine to a zipkin
 endpoint.
 
-Check the follosing exemple:
+Check the following example:
 
 .. code-block:: python
 
