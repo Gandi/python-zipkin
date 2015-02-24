@@ -8,13 +8,13 @@ Standards-Version: 3.8.5
 Homepage: https://gitlab.corp.gandi.net/devops/python-zipkin
 
 Package: python-zipkin
-Architecture: any
+Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, python-facebook-scribe, python-thrift
 Description: Zipkin client for python
  Client for twitter distributed tracing framework
 
 Package: python3-zipkin
-Architecture: any
+Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${python3:Depends}, python3-facebook-scribe, python3-thrift
 Description: Zipkin client for python
  Client for twitter distributed tracing framework
