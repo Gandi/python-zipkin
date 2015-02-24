@@ -18,7 +18,7 @@ requires = [
     'facebook-scribe',
     ]
 
-tests_require = ['tox', 'pep8']
+tests_require = ['tox', 'pep8', 'mock']
 
 if sys.version_info[:2] < (2, 7):
     tests_require.append('unittest2')
