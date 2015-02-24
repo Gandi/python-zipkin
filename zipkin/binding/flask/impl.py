@@ -10,7 +10,7 @@ log = logging.getLogger(__name__)
 
 def bind(app, endpoint=None):
     if not endpoint:
-        endpoint = Endpoint("Flask")
+        endpoint = Endpoint(app.name)
 
     events.endpoint = endpoint
 
