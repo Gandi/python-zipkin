@@ -10,13 +10,12 @@ endpoints = {}
 def before_cursor_execute(conn, cursor, statement, parameters, context,
                           executemany):
     try:
-
         endpoint = endpoints.get(conn.engine)
         parent_trace = get_current_trace()
-        cursor.trace = parent_trace.child('SQL', endpoint=endpoint)
-        cursor.trace.record(Annotation.string('query', statement))
-        cursor.trace.record(Annotation.string('parameters', repr(parameters)))
-        cursor.trace.record(Annotation.server_recv())
+        context.trace = parent_trace.child('SQL', endpoint=endpoint)
+        context.trace.record(Annotation.string('query', statement))
+        context.trace.record(Annotation.string('parameters', repr(parameters)))
+        context.trace.record(Annotation.server_recv())
     except Exception:
         log.exception('Unexpected exception while tracing SQL')
 
@@ -24,8 +23,8 @@ def before_cursor_execute(conn, cursor, statement, parameters, context,
 def after_cursor_execute(conn, cursor, statement, parameters, context,
                          executemany):
     try:
-        cursor.trace.record(Annotation.string('status', 'OK'))
-        cursor.trace.record(Annotation.server_send())
+        context.trace.record(Annotation.string('status', 'OK'))
+        context.trace.record(Annotation.server_send())
     except Exception:
         log.exception('Unexpected exception while tracing SQL')
 
