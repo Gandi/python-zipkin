@@ -5,7 +5,8 @@ from zipkin.util import hex_str
 
 def pre_request(request):
     parent_trace = local().current
-    request.trace = parent_trace.child("requests:%s %s" % (request.method, request.url))
+    request.trace = parent_trace.child("requests:%s %s" %
+                                       (request.method, request.url))
     forwarded_trace = request.trace.child_noref("subservice")
 
     request.headers['X-B3-TraceId'] = hex_str(forwarded_trace.trace_id)
