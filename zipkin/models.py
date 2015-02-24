@@ -20,8 +20,8 @@ class Endpoint(object):
         self.port = port
         self.service_name = service_name
 
-#TODO
-#__eq__, __ne__, __repr__
+# TODO
+# __eq__, __ne__, __repr__
 
 
 class TraceStack(object):

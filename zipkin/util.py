@@ -18,6 +18,7 @@ def int_or_none(val):
 def hex_str(n):
     return '%0.16x' % (n,)
 
+
 def uniq_id():
     """
     Create a random 64-bit signed integer appropriate
@@ -30,6 +31,7 @@ def uniq_id():
     """
     return random.randint(0, (2 ** 56) - 1)
 
+
 def base64_thrift(thrift_obj):
     trans = TTransport.TMemoryBuffer()
     tbp = TBinaryProtocol.TBinaryProtocol(trans)
@@ -38,9 +40,9 @@ def base64_thrift(thrift_obj):
 
     return trans.getvalue().encode('base64').strip()
 
+
 def ipv4_to_int(ipv4):
     return struct.unpack('!i', socket.inet_aton(ipv4))[0]
-
 
 
 def binary_annotation_formatter(annotation, host=None):
