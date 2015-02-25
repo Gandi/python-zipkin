@@ -1,10 +1,10 @@
 SQLAlchemy
 ==========
 
-To trace your sql request, you have to bing SQLAlchemy engine to a zipkin
+To trace your sql request, you have to bind SQLAlchemy engine to a zipkin
 endpoint.
 
-Check the following exemple:
+Check the following example:
 
 .. code-block:: python
 
@@ -33,7 +33,7 @@ parameters value like the exemple below.
             self.logged_value = '*' * 8
 
     # ....
-    
+
     session.query(Model).where(Model.sensitive == SensitiveData(str))
 
 
@@ -44,3 +44,4 @@ It's a duck!
 ``python-zipkin`` does not create the class for you, it just check
 if the parameter have the parameter. It let you decide in your code
 if ``python-zipkin`` is optional or a real dependency.
+
