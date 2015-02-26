@@ -9,6 +9,7 @@ activate
 .settings
 .idea
 .tox
+.coverage
 dist/*
 build/*
 venv*
