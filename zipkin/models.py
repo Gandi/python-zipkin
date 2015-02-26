@@ -98,7 +98,8 @@ class TraceStack(object):
 class Trace(object):
     def __init__(self, name, trace_id=None, span_id=None,
                  parent_span_id=None, endpoint=None):
-        assert isinstance(name, six.string_types), "name parameter should be a string"
+        assert isinstance(name, six.string_types), \
+            "name parameter should be a string"
         self.name = name
         self.trace_id = trace_id or uniq_id()
         self.span_id = span_id or uniq_id()
