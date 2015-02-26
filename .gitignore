@@ -8,7 +8,9 @@
 activate
 .settings
 .idea
+.tox
 dist/*
 build/*
 venv*
 docs/_build/*
+*.egg

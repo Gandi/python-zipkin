@@ -16,6 +16,7 @@ with open(os.path.join(here, name, '__init__.py')) as version:
 requires = [
     'thrift',
     'facebook-scribe',
+    'six',
     ]
 
 tests_require = ['tox', 'pep8', 'mock']
