@@ -9,7 +9,6 @@ from zipkin.util import base64_thrift_formatter
 
 logger = logging.getLogger(__name__)
 
-
 class Client(object):
 
     host = None
