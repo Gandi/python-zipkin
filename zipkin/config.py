@@ -7,7 +7,7 @@ log = logging.getLogger(__name__)
 
 
 def configure(name, settings, prefix='zipkin.',
-              use_requests=True, use_celery=True):
+              use_requests=True, use_celery=True, use_xmlrpclib=True):
     """ Include the zipkin definitions """
 
     endpoint = Endpoint(name)
@@ -21,5 +21,9 @@ def configure(name, settings, prefix='zipkin.',
     if use_celery:
         from zipkin.binding.celery import bind as bind_celery
         bind_celery(endpoint)
+
+    if use_xmlrpclib:
+        from zipkin.binding.xmlrpclib import bind as bind_xmlrpclib
+        bind_xmlrpclib()
 
     return endpoint
