@@ -19,7 +19,12 @@ requires = [
     'six',
     ]
 
-tests_require = ['tox', 'pep8', 'mock']
+tests_require = [
+    'tox',
+    'pep8',
+    'mock',
+    'httpbin'
+    ]
 
 if sys.version_info[:2] < (2, 7):
     tests_require.append('unittest2')

@@ -48,6 +48,12 @@ class TestTraceStack(unittest.TestCase):
     def test_pop_empty(self):
         self.assertRaises(IndexError, self.stack.pop)
 
+    def test_reset(self):
+        self.stack.append(Trace('testing stack'))
+        self.stack.reset()
+        self.assertEquals(len(self.stack.stack), 0)
+        self.assertEquals(self.stack.current, None)
+
     def test_replace(self):
         self.stack.append(Trace('testing stack'))
         self.stack.replace(Trace('testing stack'))
