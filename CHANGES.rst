@@ -5,6 +5,7 @@ Changelog
 ----------------------
 
 -  Flask bindings
+-  xmlrpclib client bindings
 
 
 0.3 (2015-02-16)
