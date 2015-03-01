@@ -2,7 +2,6 @@ import threading
 
 from wsgiref.simple_server import make_server, WSGIRequestHandler
 from wsgiref.handlers import SimpleHandler
-
 from httpbin import app as httpbin_app
 
 
@@ -88,8 +87,9 @@ class Server(threading.Thread):
     HTTP server running a WSGI application in its own thread.
     """
 
-    def __init__(self, host='127.0.0.1', port=0, **kwargs):
-        self.app = httpbin_app
+    def __init__(self, application=httpbin_app, host='127.0.0.1', port=0,
+                 **kwargs):
+        self.app = application
         self._server = make_server(
             host,
             port,
