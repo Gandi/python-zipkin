@@ -14,6 +14,15 @@ def before_cursor_execute(conn, cursor, statement, parameters, context,
         parent_trace = get_current_trace()
         context.trace = parent_trace.child('SQL', endpoint=endpoint)
         context.trace.record(Annotation.string('query', statement))
+
+        if parameters:
+            if isinstance(parameters, dict):
+                parameters = dict([(key, getattr(param, 'logged_value', param))
+                                   for key, param in parameters.items()])
+            else:
+                parameters = [getattr(param, 'logged_value', param)
+                              for param in parameters]
+
         context.trace.record(Annotation.string('parameters', repr(parameters)))
         context.trace.record(Annotation.server_recv())
     except Exception:
