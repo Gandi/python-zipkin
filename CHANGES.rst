@@ -6,6 +6,7 @@ Changelog
 
 -  Flask bindings
 -  xmlrpclib client bindings
+-  Filtered parameters in sqlalchemy binding
 
 
 0.3 (2015-02-16)
