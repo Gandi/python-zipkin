@@ -5,6 +5,9 @@ from zipkin.util import hex_str
 
 def pre_request(request):
     parent_trace = local().current
+    if not parent_trace:
+        return request
+
     request.trace = parent_trace.child("requests:%s %s" %
                                        (request.method, request.url))
     forwarded_trace = request.trace.child_noref("subservice")
@@ -24,6 +27,9 @@ def pre_request(request):
 def pre_response(resp, req=None):
     if not req:
         req = resp.request
+
+    if not hasattr(req, 'trace'):
+        return resp
 
     req.trace.record(Annotation.string('http.responsecode',
                                        '{0}'.format(getattr(resp, 'status',

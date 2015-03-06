@@ -49,6 +49,14 @@ class TraceStack(object):
         finally:
             self.lock.release()
 
+    def reset(self):
+        try:
+            self.lock.acquire()
+            self.stack = []
+            self.cur = None
+        finally:
+            self.lock.release()
+
     def replace(self, trace):
         assert isinstance(trace, Trace), \
             "trace parameter should be of type Trace"

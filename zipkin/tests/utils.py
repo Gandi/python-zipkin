@@ -1,4 +1,9 @@
-# from ..client import Client
+import threading
+
+from wsgiref.simple_server import make_server, WSGIRequestHandler
+from wsgiref.handlers import SimpleHandler
+
+from httpbin import app as httpbin_app
 
 
 class ScribeClient(object):
@@ -31,3 +36,89 @@ class DummyClient(object):
 
 def dummy_log(trace):
     DummyClient.log(trace)
+
+
+class ServerHandler(SimpleHandler):
+
+    server_software = 'HTTPBIN/0.1.0'
+    http_version = '1.1'
+
+    def cleanup_headers(self):
+        SimpleHandler.cleanup_headers(self)
+        self.headers['Connection'] = 'Close'
+
+    def close(self):
+        try:
+            self.request_handler.log_request(
+                self.status.split(' ', 1)[0], self.bytes_sent
+            )
+        finally:
+            SimpleHandler.close(self)
+
+
+class Handler(WSGIRequestHandler):
+
+    def handle(self):
+        """Handle a single HTTP request"""
+
+        self.raw_requestline = self.rfile.readline()
+        if not self.parse_request():  # An error code has been sent, just exit
+            return
+
+        handler = ServerHandler(
+            self.rfile, self.wfile, self.get_stderr(), self.get_environ()
+        )
+        handler.request_handler = self      # backpointer for logging
+        handler.run(self.server.get_app())
+
+    def get_environ(self):
+        """
+        wsgiref simple server adds content-type text/plain to everything, this
+        removes it if it's not actually in the headers.
+        """
+        # Note: Can't use super since this is an oldstyle class in python 2.x
+        environ = WSGIRequestHandler.get_environ(self).copy()
+        if self.headers.get('content-type') is None:
+            del environ['CONTENT_TYPE']
+        return environ
+
+
+class Server(threading.Thread):
+    """
+    HTTP server running a WSGI application in its own thread.
+    """
+
+    def __init__(self, host='127.0.0.1', port=0, **kwargs):
+        self.app = httpbin_app
+        self._server = make_server(
+            host,
+            port,
+            self.app,
+            handler_class=Handler,
+            **kwargs
+        )
+        self.host = self._server.server_address[0]
+
+        self.port = self._server.server_address[1]
+        self.protocol = 'http'
+
+        super(Server, self).__init__(
+            name=self.__class__,
+            target=self._server.serve_forever,
+        )
+
+    def __del__(self):
+        self.stop()
+
+    def __add__(self, other):
+        return self.url + other
+
+    def stop(self):
+        self._server.shutdown()
+
+    @property
+    def url(self):
+        return '{0}://{1}:{2}'.format(self.protocol, self.host, self.port)
+
+    def join(self, url, allow_fragments=True):
+        return urljoin(self.url, url, allow_fragments=allow_fragments)
