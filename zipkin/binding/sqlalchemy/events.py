@@ -27,7 +27,7 @@ def before_cursor_execute(conn, cursor, statement, parameters, context,
 
 def after_cursor_execute(conn, cursor, statement, parameters, context,
                          executemany):
-    if not hasattr(context, 'trace'):
+    if not hasattr(cursor, 'trace'):
         return
     try:
         cursor.trace.record(Annotation.string('status', 'OK'))
@@ -37,7 +37,7 @@ def after_cursor_execute(conn, cursor, statement, parameters, context,
 
 
 def dbapi_error(conn, cursor, statement, parameters, context, exception):
-    if not hasattr(context, 'trace'):
+    if not hasattr(cursor, 'trace'):
         return
     try:
         cursor.trace.record(Annotation.string('status', 'KO'))
