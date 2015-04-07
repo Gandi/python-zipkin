@@ -13,6 +13,10 @@ def before_cursor_execute(conn, cursor, statement, parameters, context,
 
         endpoint = endpoints.get(conn.engine)
         parent_trace = get_current_trace()
+        if not parent_trace:
+            log.error('No parent found while tracing SQL')
+            return
+
         cursor.trace = parent_trace.child('SQL', endpoint=endpoint)
         cursor.trace.record(Annotation.string('query', statement))
         cursor.trace.record(Annotation.string('parameters', repr(parameters)))
@@ -23,6 +27,8 @@ def before_cursor_execute(conn, cursor, statement, parameters, context,
 
 def after_cursor_execute(conn, cursor, statement, parameters, context,
                          executemany):
+    if not hasattr(context, 'trace'):
+        return
     try:
         cursor.trace.record(Annotation.string('status', 'OK'))
         cursor.trace.record(Annotation.server_send())
@@ -31,6 +37,8 @@ def after_cursor_execute(conn, cursor, statement, parameters, context,
 
 
 def dbapi_error(conn, cursor, statement, parameters, context, exception):
+    if not hasattr(context, 'trace'):
+        return
     try:
         cursor.trace.record(Annotation.string('status', 'KO'))
         cursor.trace.record(Annotation.server_send())
