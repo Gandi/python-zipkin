@@ -3,6 +3,6 @@ Upstream-Name: python-zipkin
 Source: https://gitlab.corp.gandi.net/devops/python-zipkin/tree/master
 
 Files: *
-Copyright: 2015 - Gandi S.A - Gandi.net
+Copyright: 2015 - Gandi SAS - Gandi.net
 License: GPL2
   See /usr/share/common-licenses/GPL-2
