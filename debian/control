@@ -1,5 +1,5 @@
 Source: python-zipkin
-Section: utils
+Section: python
 Priority: optional
 Maintainer: Arthur Gautier <baloo@gandi.net>
 Build-Depends: debhelper (>= 8), python-all, python3, python-setuptools, python3-setuptools
