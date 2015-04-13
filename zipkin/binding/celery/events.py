@@ -1,3 +1,5 @@
+import logging
+
 from zipkin import local
 from zipkin.models import Annotation, Trace
 from zipkin.util import hex_str, int_or_none
@@ -6,10 +8,16 @@ from zipkin.client import log
 
 
 endpoint = None
+logger = logging.getLogger(__name__)
 
 
 def task_send_handler(body, exchange, routing_key, headers, **kwargs):
     trace = local().current
+
+    if not trace:
+      logger.warn('No zipkin parent trace found, ignoring tracing task.')
+      return
+
     forwarded_trace = trace.child_noref("subservice")
     headers['X-B3-TraceId'] = hex_str(forwarded_trace.trace_id)
     headers['X-B3-SpanId'] = hex_str(forwarded_trace.span_id)
