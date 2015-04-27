@@ -28,7 +28,8 @@ class Client(object):
     @classmethod
     def get_connection(cls):
         if not cls._client:
-            cls._connection_attempts += 1
+            if cls._connection_attempts < 1000:
+                cls._connection_attempts += 1
             if cls._connection_attempts not in CONNECTION_RETRIES:
                 return
 
