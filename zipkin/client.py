@@ -9,12 +9,15 @@ from zipkin.util import base64_thrift_formatter
 
 logger = logging.getLogger(__name__)
 
+CONNECTION_RETRIES = [1, 10, 20, 50, 100, 200, 400, 1000]
+
 
 class Client(object):
 
     host = None
     port = 9410
     _client = None
+    _connection_attempts = 0
 
     @classmethod
     def configure(cls, settings, prefix):
@@ -25,6 +28,10 @@ class Client(object):
     @classmethod
     def get_connection(cls):
         if not cls._client:
+            cls._connection_attempts += 1
+            if cls._connection_attempts not in CONNECTION_RETRIES:
+                return
+
             try:
                 socket = TSocket.TSocket(host=cls.host, port=cls.port)
                 transport = TTransport.TFramedTransport(socket)
