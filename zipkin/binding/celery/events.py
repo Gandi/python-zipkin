@@ -15,8 +15,8 @@ def task_send_handler(body, exchange, routing_key, headers, **kwargs):
     trace = local().current
 
     if not trace:
-      logger.warn('No zipkin parent trace found, ignoring tracing task.')
-      return
+        logger.warn('No zipkin parent trace found, ignoring tracing task.')
+        return
 
     forwarded_trace = trace.child_noref("subservice")
     headers['X-B3-TraceId'] = hex_str(forwarded_trace.trace_id)
