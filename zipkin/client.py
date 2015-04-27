@@ -28,10 +28,14 @@ class Client(object):
     @classmethod
     def get_connection(cls):
         if not cls._client:
-            if cls._connection_attempts < 1000:
-                cls._connection_attempts += 1
-            if cls._connection_attempts not in CONNECTION_RETRIES:
+            cls._connection_attempts += 1
+
+            if (cls._connection_attempts > CONNECTION_RETRIES[-1]) and \
+                not ((cls._connection_attempts % CONNECTION_RETRIES[-1]) == 0):
                 return
+            if (cls._connection_attempts < CONNECTION_RETRIES[-1]) and\
+               (cls._connection_attempts not in CONNECTION_RETRIES):
+               return
 
             try:
                 socket = TSocket.TSocket(host=cls.host, port=cls.port)
@@ -41,6 +45,8 @@ class Client(object):
                                                            strictWrite=False)
                 cls._client = scribe.Client(protocol)
                 transport.open()
+
+                cls._connection_attempts = 0
             except TTransport.TTransportException:
                 cls._client = None
                 logger.error("Can't connect to zipkin collector %s:%d"
