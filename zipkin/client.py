@@ -30,12 +30,13 @@ class Client(object):
         if not cls._client:
             cls._connection_attempts += 1
 
-            if (cls._connection_attempts > CONNECTION_RETRIES[-1]) and \
-                not ((cls._connection_attempts % CONNECTION_RETRIES[-1]) == 0):
+            max_retries = CONNECTION_RETRIES[-1]
+            if ((cls._connection_attempts > max_retries) and
+                    not ((cls._connection_attempts % max_retries) == 0)):
                 return
-            if (cls._connection_attempts < CONNECTION_RETRIES[-1]) and\
-               (cls._connection_attempts not in CONNECTION_RETRIES):
-               return
+            if ((cls._connection_attempts < max_retries) and
+                    (cls._connection_attempts not in CONNECTION_RETRIES)):
+                return
 
             try:
                 socket = TSocket.TSocket(host=cls.host, port=cls.port)
