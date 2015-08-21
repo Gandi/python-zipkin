@@ -1,3 +1,9 @@
+python-zipkin (0.3.6) unstable; urgency=medium
+
+  * Fixes sqlalchemy binding code to handle both mysql and postgresql
+
+ -- Dejan Filipovic <sayoun@gandi.net>  Fri, 21 Aug 2015 17:44:55 +0200
+
 python-zipkin (0.3.5) unstable; urgency=medium
 
   * Add new entry in Debian changelog.
