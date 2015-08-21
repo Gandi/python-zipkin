@@ -12,8 +12,13 @@ def before_cursor_execute(conn, cursor, statement, parameters, context,
     try:
         endpoint = endpoints.get(conn.engine)
         parent_trace = get_current_trace()
-        context.trace = parent_trace.child('SQL', endpoint=endpoint)
-        context.trace.record(Annotation.string('query', statement))
+
+        if not parent_trace:
+            log.error('No parent found while tracing SQL')
+            return
+
+        cursor.trace = parent_trace.child('SQL', endpoint=endpoint)
+        cursor.trace.record(Annotation.string('query', statement))
 
         if parameters:
             if isinstance(parameters, dict):
@@ -23,14 +28,16 @@ def before_cursor_execute(conn, cursor, statement, parameters, context,
                 parameters = [getattr(param, 'logged_value', param)
                               for param in parameters]
 
-        context.trace.record(Annotation.string('parameters', repr(parameters)))
-        context.trace.record(Annotation.server_recv())
+        cursor.trace.record(Annotation.string('parameters', repr(parameters)))
+        cursor.trace.record(Annotation.server_recv())
     except Exception:
         log.exception('Unexpected exception while tracing SQL')
 
 
 def after_cursor_execute(conn, cursor, statement, parameters, context,
                          executemany):
+    if not hasattr(cursor, 'trace'):
+        return
     try:
         context.trace.record(Annotation.string('status', 'OK'))
         context.trace.record(Annotation.server_send())
@@ -39,6 +46,8 @@ def after_cursor_execute(conn, cursor, statement, parameters, context,
 
 
 def dbapi_error(conn, cursor, statement, parameters, context, exception):
+    if not hasattr(cursor, 'trace'):
+        return
     try:
         cursor.trace.record(Annotation.string('status', 'KO'))
         cursor.trace.record(Annotation.server_send())
