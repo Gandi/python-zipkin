@@ -1,3 +1,9 @@
+python-zipkin (0.3.4) unstable; urgency=medium
+
+  * New code for exponential backoff.
+
+ -- Nicolas Chipaux <aegiap@gandi.net>  Fri, 21 Aug 2015 10:20:08 +0200
+
 python-zipkin (0.3.3) unstable; urgency=medium
 
   * Handle case where no parent trace is available when tracing
