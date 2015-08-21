@@ -1,12 +1,13 @@
 Changelog
 =========
 
-0.4 (not yet released)
+0.4 (2015-08-21)
 ----------------------
 
 -  Flask bindings
 -  xmlrpclib client bindings
 -  Filtered parameters in sqlalchemy binding
+-  Implement exponential backoff on connection
 
 
 0.3 (2015-02-16)
