@@ -17,8 +17,14 @@ def before_cursor_execute(conn, cursor, statement, parameters, context,
             log.error('No parent found while tracing SQL')
             return
 
-        cursor.trace = parent_trace.child('SQL', endpoint=endpoint)
-        cursor.trace.record(Annotation.string('query', statement))
+        try:
+            context.trace = parent_trace.child('SQL', endpoint=endpoint)
+            abstract = context
+        except AttributeError:
+            cursor.trace = parent_trace.child('SQL', endpoint=endpoint)
+            abstract = cursor
+
+        abstract.trace.record(Annotation.string('query', statement))
 
         if parameters:
             if isinstance(parameters, dict):
@@ -28,28 +34,33 @@ def before_cursor_execute(conn, cursor, statement, parameters, context,
                 parameters = [getattr(param, 'logged_value', param)
                               for param in parameters]
 
-        cursor.trace.record(Annotation.string('parameters', repr(parameters)))
-        cursor.trace.record(Annotation.server_recv())
+        abstract.trace.record(Annotation.string('parameters',
+                              repr(parameters)))
+        abstract.trace.record(Annotation.server_recv())
     except Exception:
         log.exception('Unexpected exception while tracing SQL')
 
 
 def after_cursor_execute(conn, cursor, statement, parameters, context,
                          executemany):
-    if not hasattr(cursor, 'trace'):
+    if not hasattr(context, 'trace') and not hasattr(cursor, 'trace'):
         return
+    abstract = context if hasattr(context, 'trace') else cursor
+
     try:
-        context.trace.record(Annotation.string('status', 'OK'))
-        context.trace.record(Annotation.server_send())
+        abstract.trace.record(Annotation.string('status', 'OK'))
+        abstract.trace.record(Annotation.server_send())
     except Exception:
         log.exception('Unexpected exception while tracing SQL')
 
 
 def dbapi_error(conn, cursor, statement, parameters, context, exception):
-    if not hasattr(cursor, 'trace'):
+    if not hasattr(context, 'trace') and not hasattr(cursor, 'trace'):
         return
+    abstract = context if hasattr(context, 'trace') else cursor
+
     try:
-        cursor.trace.record(Annotation.string('status', 'KO'))
-        cursor.trace.record(Annotation.server_send())
+        abstract.trace.record(Annotation.string('status', 'KO'))
+        abstract.trace.record(Annotation.server_send())
     except Exception:
         log.exception('Unexpected exception while tracing SQL')
