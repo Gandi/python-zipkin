@@ -45,6 +45,7 @@ class Client(object):
             try:
                 socket = TSocket.TSocket(host=cls.host, port=cls.port)
                 socket.setTimeout(cls.timeout)
+                socket.open()
                 transport = TTransport.TFramedTransport(socket)
                 protocol = TBinaryProtocol.TBinaryProtocol(trans=transport,
                                                            strictRead=False,
