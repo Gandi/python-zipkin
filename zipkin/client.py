@@ -1,4 +1,5 @@
 import logging
+from socket import timeout
 
 from scribe import scribe
 from thrift.transport import TTransport, TSocket
@@ -18,12 +19,15 @@ class Client(object):
     port = 9410
     _client = None
     _connection_attempts = 0
+    timeout = 50
 
     @classmethod
     def configure(cls, settings, prefix):
         cls.host = settings.get(prefix + 'collector')
         if prefix + 'collector.port' in settings:
             cls.port = int(settings[prefix + 'collector.port'])
+        if prefix + 'collector.timeout' in settings:
+            cls.timeout = int(settings[prefix + 'collector.timeout'])
 
     @classmethod
     def get_connection(cls):
@@ -40,6 +44,8 @@ class Client(object):
 
             try:
                 socket = TSocket.TSocket(host=cls.host, port=cls.port)
+                socket.setTimeout(cls.timeout)
+                socket.open()
                 transport = TTransport.TFramedTransport(socket)
                 protocol = TBinaryProtocol.TBinaryProtocol(trans=transport,
                                                            strictRead=False,
@@ -75,6 +81,10 @@ class Client(object):
             except EOFError:
                 cls._client = None
                 logger.error('EOFError while logging a trace on zipkin '
+                             'collector %s:%d' % (cls.host, cls.port))
+            except timeout:
+                cls._client = None
+                logger.error('timeout when sending data or connecting to'
                              'collector %s:%d' % (cls.host, cls.port))
             except Exception:
                 cls._client = None
