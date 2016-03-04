@@ -5,4 +5,4 @@ from .config import configure
 from .thread import local  # XXX remove me from here
 
 
-__version__ = '0.3.7'
+__version__ = '0.3.8'

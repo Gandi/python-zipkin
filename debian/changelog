@@ -1,3 +1,9 @@
+python-zipkin (0.3.7) unstable; urgency=medium
+
+  * New release with timeout on connection
+
+ -- Nicolas Chipaux <aegiap@gandi.net>  Fri, 04 Mar 2016 14:41:59 +0100
+
 python-zipkin (0.3.6) unstable; urgency=medium
 
   * Fixes sqlalchemy binding code to handle both mysql and postgresql
