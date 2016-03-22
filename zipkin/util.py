@@ -2,10 +2,12 @@ import random
 import struct
 import socket
 
-from thrift.protocol import TBinaryProtocol
-from thrift.transport import TTransport
+from base64 import b64encode
+from six import text_type
+from thriftpy.protocol import TBinaryProtocol
+from thriftpy.transport import TMemoryBuffer
 
-from ._thrift.zipkinCore import ttypes
+from .zipkin import zipkincore_thrift as ttypes
 
 
 def int_or_none(val):
@@ -33,12 +35,12 @@ def uniq_id():
 
 
 def base64_thrift(thrift_obj):
-    trans = TTransport.TMemoryBuffer()
-    tbp = TBinaryProtocol.TBinaryProtocol(trans)
+    trans = TMemoryBuffer()
+    tbp = TBinaryProtocol(trans)
 
     thrift_obj.write(tbp)
 
-    return trans.getvalue().encode('base64').strip()
+    return b64encode(bytes(trans.getvalue())).strip()
 
 
 def ipv4_to_int(ipv4):
@@ -55,7 +57,7 @@ def binary_annotation_formatter(annotation, host=None):
 
     value = annotation.value
 
-    if isinstance(value, unicode):
+    if isinstance(value, text_type):
         value = value.encode('utf-8')
 
     return ttypes.BinaryAnnotation(

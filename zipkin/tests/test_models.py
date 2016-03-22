@@ -1,6 +1,6 @@
 import unittest
 
-from ..models import TraceStack, Annotation, Endpoint, Trace
+from ..models import TraceStack, Annotation, Trace
 
 
 class TestTrace(unittest.TestCase):
@@ -10,16 +10,16 @@ class TestTrace(unittest.TestCase):
     def test_child(self):
         self.trace.child('child')
 
-        self.assertEquals(len(self.trace.children()), 2)
-        self.assertEquals(self.trace.children()[0].name, 'child')
+        self.assertEqual(len(self.trace.children()), 2)
+        self.assertEqual(self.trace.children()[0].name, 'child')
 
     def test_child_noref(self):
         self.trace.child_noref('test')
-        self.assertEquals(len(self.trace.children()), 1)
+        self.assertEqual(len(self.trace.children()), 1)
 
     def test_record(self):
         self.trace.record(Annotation.string('key', 'value'))
-        self.assertEquals(self.trace.children()[0].annotations[0].name, 'key')
+        self.assertEqual(self.trace.children()[0].annotations[0].name, 'key')
 
     def test_type(self):
         # Unicode or string should not raise
@@ -39,11 +39,11 @@ class TestTraceStack(unittest.TestCase):
         self.stack.append(Trace('testing stack'))
         self.stack.child('subtrace')
 
-        self.assertEquals(self.stack.current.name, 'subtrace')
+        self.assertEqual(self.stack.current.name, 'subtrace')
         trace = self.stack.pop()
-        self.assertEquals(trace.name, 'subtrace')
+        self.assertEqual(trace.name, 'subtrace')
 
-        self.assertEquals(self.stack.current.name, 'testing stack')
+        self.assertEqual(self.stack.current.name, 'testing stack')
 
     def test_pop_empty(self):
         self.assertRaises(IndexError, self.stack.pop)
@@ -51,15 +51,15 @@ class TestTraceStack(unittest.TestCase):
     def test_reset(self):
         self.stack.append(Trace('testing stack'))
         self.stack.reset()
-        self.assertEquals(len(self.stack.stack), 0)
-        self.assertEquals(self.stack.current, None)
+        self.assertEqual(len(self.stack.stack), 0)
+        self.assertEqual(self.stack.current, None)
 
     def test_replace(self):
         self.stack.append(Trace('testing stack'))
         self.stack.replace(Trace('testing stack'))
 
         # We replaced stack, we should have only one item
-        self.assertEquals(len(self.stack.stack), 1)
+        self.assertEqual(len(self.stack.stack), 1)
 
     def test_types(self):
         self.assertRaises(AssertionError, self.stack.replace, "string")

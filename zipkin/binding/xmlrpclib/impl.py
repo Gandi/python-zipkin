@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 
 import re
-import xmlrpclib
+import six.moves.xmlrpc_client as xmlrpclib
 import logging
 
 from zipkin import local

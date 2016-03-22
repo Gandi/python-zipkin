@@ -5,7 +5,7 @@ import socket
 from threading import Lock
 
 from .util import uniq_id
-from ._thrift.zipkinCore import constants
+from.zipkin import zipkincore_thrift as constants
 
 
 class Endpoint(object):
@@ -16,8 +16,11 @@ class Endpoint(object):
     """
 
     def __init__(self, service_name, ip=None, port=0):
-        if not ip:
-            ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
+        try:
+            if not ip:
+                ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
+        except socket.gaierror:
+            ip = '127.0.0.1'
         self.ip = ip
         self.port = port
         self.service_name = service_name

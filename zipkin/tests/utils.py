@@ -1,8 +1,31 @@
+from __future__ import unicode_literals
+
 import threading
 
+import json
 from wsgiref.simple_server import make_server, WSGIRequestHandler
 from wsgiref.handlers import SimpleHandler
-from httpbin import app as httpbin_app
+from six.moves.urllib.parse import urljoin
+from flask import Flask, request
+from flask.views import View
+
+
+class Headers(View):
+    def dispatch_request(self):
+        return json.dumps({'headers': dict(request.headers)})
+
+
+class FlaskApp(Flask):
+    def __init__(self, *args, **kwargs):
+        super(FlaskApp, self).__init__(__name__)
+        self.setup_url()
+
+    def setup_url(self):
+        self.add_url_rule('/headers', methods=['GET'],
+                          view_func=Headers.as_view(str('headers')))
+
+
+httpbin_app = FlaskApp()
 
 
 class ScribeClient(object):

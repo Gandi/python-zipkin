@@ -1,5 +1,3 @@
-import sys
-
 try:
     import unittest2 as unittest
 
@@ -8,12 +6,10 @@ except ImportError:
 
 import multiprocessing as mp
 
-from SimpleXMLRPCServer import SimpleXMLRPCServer, SimpleXMLRPCRequestHandler
+from six.moves.xmlrpc_server import SimpleXMLRPCServer
+from six.moves.xmlrpc_client import ServerProxy
 
-from mock import patch
 from time import time, sleep
-
-from xmlrpclib import ServerProxy
 
 import zipkin
 from zipkin.thread import local
@@ -29,7 +25,7 @@ class XMLRPClibAppTestCase(unittest.TestCase):
 
     def setUp(self):
         endpoint = zipkin.configure('My test xmlrpclib application',
-                                    {'zipkin.collector': 'www.remote.url',
+                                    {'zipkin.collector': 'localhost',
                                      'zipkin.service_name': 'my app'})
 
         bind_zipkin(endpoint)
@@ -60,6 +56,6 @@ class XMLRPClibAppTestCase(unittest.TestCase):
         self.assertGreater(delta, 0.101)
 
         traces = DummyClient._client.messages
-        self.assertEquals(len(traces), 1,
-                          "There should be one trace for "
-                          "the request just processed")
+        self.assertEqual(len(traces), 1,
+                         "There should be one trace for "
+                         "the request just processed")
