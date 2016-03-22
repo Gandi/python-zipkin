@@ -1,3 +1,10 @@
+python-zipkin (0.4.0) UNRELEASED; urgency=medium
+
+  * python3 support
+  * switch python-thrift to python-thriftpy
+
+ -- Arthur Gautier <baloo@gandi.net>  Wed, 23 Mar 2016 13:54:37 +0000
+
 python-zipkin (0.3.7) unstable; urgency=medium
 
   * New release with timeout on connection

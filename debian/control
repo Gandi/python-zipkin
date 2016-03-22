@@ -2,19 +2,38 @@ Source: python-zipkin
 Section: python
 Priority: optional
 Maintainer: Arthur Gautier <baloo@gandi.net>
-Build-Depends: debhelper (>= 8), python-all, python3, python-setuptools, python3-setuptools
+Build-Depends: debhelper (>= 8),
+               python-all,
+               python3-all,
+               python-setuptools,
+               python3-setuptools,
+               dh-python, sphinx-common, python-sphinx,
+               python-tox, pep8,
+               python-thriftpy, python3-thriftpy,
+               python-mock, python3-mock,
+               python-flask, python3-flask,
+               python-celery, python3-celery,
+               python-requests, python3-requests,
+               python-blinker, python3-blinker
 X-Python-Version: >= 2.6
 Standards-Version: 3.8.5
 Homepage: https://gitlab.corp.gandi.net/devops/python-zipkin
 
 Package: python-zipkin
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, python-facebook-scribe, python-thrift
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
 Description: Zipkin client for python
  Client for twitter distributed tracing framework
 
 Package: python3-zipkin
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${python3:Depends}, python3-facebook-scribe, python3-thrift
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python3:Depends}
 Description: Zipkin client for python
+ Client for twitter distributed tracing framework
+
+Package: python-zipkin-doc
+Architecture: all
+Section: doc
+Depends: ${sphinxdoc:Depends}, ${misc:Depends}
+Description: Documentation of zipkin python
  Client for twitter distributed tracing framework

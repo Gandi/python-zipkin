@@ -1,17 +1,17 @@
 #!/usr/bin/make -f
 
-#DH_VERBOSE = 1
-
-DPKG_EXPORT_BUILDFLAGS = 1
+export PYBUILD_DESTDIR_python2=debian/python-zipkin/
+export PYBUILD_DESTDIR_python3=debian/python3-zipkin/
 
 %:
-	dh $@ --with python2,python3
+	dh "$@" --with python2,python3,sphinxdoc --buildsystem=pybuild
 
-override_dh_auto_install:
-	`pyversions -d` setup.py install \
-		--install-layout=deb \
-		--root=debian/python-zipkin
-	`py3versions -d` setup.py install \
-		--install-layout=deb \
-		--root=debian/python3-zipkin
+override_dh_clean:
+	rm -rf build \
+	 zipkin.egg-info/
+	dh_clean
 
+override_dh_auto_build:
+	dh_auto_build
+	PYTHONPATH=. http_proxy='127.0.0.1:9' sphinx-build -N -bhtml docs/ build/html # HTML generator
+	PYTHONPATH=. http_proxy='127.0.0.1:9' sphinx-build -N -bman docs/ build/man # Manpage generator
