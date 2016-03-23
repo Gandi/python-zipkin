@@ -1,0 +1,13 @@
+Document: python-zipkin-doc
+Title: Zipkin Documentation
+Author: Gandi SAS
+Abstract: Manual for Zipkin
+Section: Programming/Python
+
+Format: HTML
+Index: /usr/share/doc/python-zipkin-doc/html/index.html
+Files:
+ /usr/share/doc/python-zipkin-doc/html/_sources/*
+ /usr/share/doc/python-zipkin-doc/html/_static/*
+ /usr/share/doc/python-zipkin-doc/html/*.html
+

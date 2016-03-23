@@ -1,3 +1,4 @@
+# flake8: noqa
 try:
     from requests.packages.urllib3.packages.six.moves import range
 

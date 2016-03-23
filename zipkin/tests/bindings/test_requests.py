@@ -50,9 +50,9 @@ class RequestsNoContextTestCase(RequestsTestCase):
         resp = requests.get(self.httpbin.url + '/headers')
         headers = request_json(resp)
 
-        self.assertEquals(headers.get('X-B3-TraceId', None), None,
-                          "There should be no B3 headers if context "
-                          "is not present")
+        self.assertEqual(headers.get('X-B3-TraceId', None), None,
+                         "There should be no B3 headers if context "
+                         "is not present")
 
 
 class RequestsWithContextTestCase(RequestsTestCase):
@@ -73,6 +73,6 @@ class RequestsWithContextTestCase(RequestsTestCase):
         resp = requests.get(self.httpbin.url + '/headers')
         headers = request_json(resp)['headers']
 
-        self.assertEquals(headers.get('X-B3-Traceid', None),
-                          hex_str(self.trace.trace_id),
-                          "There should be B3 headers if context is present")
+        self.assertEqual(headers.get('X-B3-Traceid', None),
+                         hex_str(self.trace.trace_id),
+                         "There should be B3 headers if context is present")

@@ -14,16 +14,12 @@ with open(os.path.join(here, name, '__init__.py')) as version:
                          re.S).match(version.read()).group(1)
 
 requires = [
-    'thrift',
-    'facebook-scribe',
+    'thriftpy',
     'six',
     ]
 
 tests_require = [
-    'tox',
-    'pep8',
-    'mock',
-    'httpbin'
+    'mock'
     ]
 
 if sys.version_info[:2] < (2, 7):

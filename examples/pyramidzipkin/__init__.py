@@ -9,7 +9,7 @@ def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     config = Configurator(settings=settings)
-    config.include('pyramid.binding.pyramid')
+    config.include('zipkin.binding.pyramid')
 
     config.add_route('root', '/')
     config.add_route('sleep', '/sleep/{time}')

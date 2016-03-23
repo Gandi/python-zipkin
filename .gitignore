@@ -16,3 +16,7 @@ venv*
 docs/_build/*
 *.egg
 .eggs
+
+.pytest.restart
+.cache
+.pybuild
