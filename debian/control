@@ -8,12 +8,18 @@ Build-Depends: debhelper (>= 8),
                python-setuptools,
                python3-setuptools,
                dh-python, sphinx-common, python-sphinx,
-               python-tox, pep8,
+#              Everything that follows are test dependencies
+#              We run tests at build, because of missing dependencies on wheezy
+#              we won't run python3.2 tests.
+               python-tox | dpkg, pep8, python-unittest2,
                python-thriftpy, python3-thriftpy,
                python-mock, python3-mock,
-               python-flask, python3-flask,
-               python-celery, python3-celery,
-               python-requests, python3-requests,
+               python-flask, python3-flask | dpkg,
+               python-celery, python3-celery | dpkg,
+#              python-requests_2.8.1-1 is fucked up with python2.6 for wheezy
+#              on gandi's repositories. Forces aptitude to picks up another one.
+               python-requests (<< 2.8.1-1) | python-requests (>> 2.8.1-1),
+               python3-requests,
                python-blinker, python3-blinker
 X-Python-Version: >= 2.6
 Standards-Version: 3.8.5

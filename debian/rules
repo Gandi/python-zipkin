@@ -2,6 +2,10 @@
 
 export PYBUILD_DESTDIR_python2=debian/python-zipkin/
 export PYBUILD_DESTDIR_python3=debian/python3-zipkin/
+# On wheezy, not all tests dependencies are available for python3,
+# two solutions, either allow setuptools to contact pypi, or just disable the
+# tests on python3 / wheezy. Jessie uses python3.4, not disabled there.
+export PYBUILD_DISABLE_python3.2=test
 
 %:
 	dh "$@" --with python2,python3,sphinxdoc --buildsystem=pybuild
