@@ -1,6 +1,7 @@
 python-zipkin (0.4.1) UNRELEASED; urgency=medium
 
   * Fixup build for wheezy
+  * requests: fixup for 2.0 version
 
  -- Arthur Gautier <baloo@gandi.net>  Thu, 24 Mar 2016 23:32:35 +0000
 
