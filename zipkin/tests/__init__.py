@@ -11,10 +11,15 @@ except ImportError:
     import os.path
     import inspect
 
-    import requests.packages
+    try:
+        import requests.packages
 
-    if 'six.moves' in sys.modules:
-        del sys.modules['six.moves']
-        sys.path.remove(os.path.dirname(inspect.getfile(requests.packages)))
+        if 'six.moves' in sys.modules:
+            del sys.modules['six.moves']
+            dirname = os.path.dirname(inspect.getfile(requests.packages))
+            if dirname in sys.path:
+                sys.path.remove(dirname)
+    except ImportError:
+        pass
 
     import six.moves

@@ -1,5 +1,7 @@
 import unittest
 
+from six import u
+
 from ..models import TraceStack, Annotation, Trace
 
 
@@ -24,7 +26,7 @@ class TestTrace(unittest.TestCase):
     def test_type(self):
         # Unicode or string should not raise
         self.trace.child('string')
-        self.trace.child(u'unicode')
+        self.trace.child(u('unicode'))
 
         # rest should raise
         self.assertRaises(AssertionError, self.trace.child, 1)
@@ -72,4 +74,4 @@ class TestTraceStack(unittest.TestCase):
 
         # String or unicode should not raise
         self.stack.child("string")
-        self.stack.child(u"unicode")
+        self.stack.child(u("unicode"))
