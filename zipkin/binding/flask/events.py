@@ -27,3 +27,4 @@ def pre_response(app, response, **extra):
                                            '{0}'.format(response.status_code)))
     request.trace.record(Annotation.server_send())
     log(request.trace)
+    local().pop()

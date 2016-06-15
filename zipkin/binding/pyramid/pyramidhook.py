@@ -28,5 +28,6 @@ def log_response(endpoint):
         trace.record(Annotation.server_send())
 
         log(trace)
+        local().pop()
 
     return wrap
