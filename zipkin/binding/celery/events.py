@@ -45,3 +45,4 @@ def task_postrun_handler(task_id, task, **kwargs):
     trace.record(Annotation.server_send())
 
     log(trace)
+    local().pop()
