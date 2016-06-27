@@ -1,10 +1,14 @@
-python-zipkin (0.4.1) UNRELEASED; urgency=medium
+python-zipkin (0.4.1) unstable; urgency=medium
 
+  [ Arthur Gautier ]
   * Fixup build for wheezy
   * requests: fixup for 2.0 version
   * tests runs in python3.2 (syntax)
 
- -- Arthur Gautier <baloo@gandi.net>  Thu, 24 Mar 2016 23:34:53 +0000
+  [ Sylvain Leurent ]
+  * Fix mem-leack on some binding
+
+ -- Sylvain Leurent <moitux@gandi.net>  Mon, 27 Jun 2016 17:33:15 +0200
 
 python-zipkin (0.4.0) unstable; urgency=medium
 
