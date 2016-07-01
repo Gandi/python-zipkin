@@ -1,3 +1,10 @@
+python-zipkin (0.5.0) unstable; urgency=medium
+
+  [ Arthur Gautier ]
+  * Switch to non-blocking sockets
+
+ -- Arthur Gautier <baloo@gandi.net>  Fri, 01 Jul 2016 23:11:13 +0000
+
 python-zipkin (0.4.1) unstable; urgency=medium
 
   [ Arthur Gautier ]
