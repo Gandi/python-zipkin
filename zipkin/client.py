@@ -69,8 +69,8 @@ class TNonBlockingSocket(TSocket):
         Flush incoming buffer
         """
         try:
-            receiving = 1
-            while receiving > 0:  # socket.error.errno.EAGAIN will exit this
+            receiving = ' '
+            while len(receiving) > 0:  # socket.error.errno.EAGAIN will exit this
                 receiving = self.sock.recv(1024)
         except socket.error as e:
             # if EAGAIN or EWOULDBLOCK, then there is nothing to read
