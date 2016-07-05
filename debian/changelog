@@ -1,3 +1,9 @@
+python-zipkin (0.5.1) unstable; urgency=medium
+
+  * Fix infinite loop
+
+ -- Arthur Gautier <baloo@gandi.net>  Tue, 05 Jul 2016 14:22:15 +0000
+
 python-zipkin (0.5.0) unstable; urgency=medium
 
   [ Arthur Gautier ]
