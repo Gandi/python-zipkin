@@ -157,6 +157,10 @@ class Client(object):
         if not cls.host:
             logger.debug('Zipkin tracing is disabled')
             return
+
+        unknown = ('Unknown Exception while logging a trace on '
+                   'zipkin collector %s:%d' % (cls.host, cls.port))
+
         client = cls.get_connection()
         if client:
             messages = [base64_thrift_formatter(t, t.annotations)
@@ -170,11 +174,17 @@ class Client(object):
                 cls._client = None
                 logger.error('EOFError while logging a trace on zipkin '
                              'collector %s:%d' % (cls.host, cls.port))
+            except socket.error as err:
+                cls._client = None
+                if err.errno == errno.EPIPE:
+                    logger.error('Broken pipe while logging a trace '
+                                 'on zipkin collector %s:%d',
+                                 cls.host, cls.port)
+                else:
+                    logger.exception(unknown)
             except Exception:
                 cls._client = None
-                logger.exception('Unknown Exception while logging a trace on '
-                                 'zipkin collector %s:%d' % (cls.host,
-                                                             cls.port))
+                logger.exception(unknown)
         else:
             logger.warn("Can't log zipkin trace, not connected")
 
