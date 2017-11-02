@@ -1,3 +1,10 @@
+python-zipkin (0.5.5) unstable; urgency=medium
+
+  * Comply with opentracing spec
+  * Try to graph celery
+
+ -- Arthur Gautier <baloo@gandi.net>  Thu, 02 Nov 2017 19:18:04 +0000
+
 python-zipkin (0.5.4) unstable; urgency=medium
 
   * Handle broken pipes specifically
