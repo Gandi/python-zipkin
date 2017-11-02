@@ -24,7 +24,7 @@ def before_cursor_execute(conn, cursor, statement, parameters, context,
             cursor.trace = parent_trace.child('SQL', endpoint=endpoint)
             abstract = cursor
 
-        abstract.trace.record(Annotation.string('query', statement))
+        abstract.trace.record(Annotation.string('db.statement', statement))
 
         if parameters:
             if isinstance(parameters, dict):
@@ -34,8 +34,9 @@ def before_cursor_execute(conn, cursor, statement, parameters, context,
                 parameters = [getattr(param, 'logged_value', param)
                               for param in parameters]
 
-        abstract.trace.record(Annotation.string('parameters',
+        abstract.trace.record(Annotation.string('db.parameters',
                               repr(parameters)))
+        abstract.trace.record(Annotation.string('span.kind', 'client'))
         abstract.trace.record(Annotation.server_recv())
     except Exception:
         log.exception('Unexpected exception while tracing SQL')

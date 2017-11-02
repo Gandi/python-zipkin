@@ -18,7 +18,9 @@ def pre_request(request):
         request.headers['X-B3-ParentSpanId'] = \
             hex_str(forwarded_trace.parent_span_id)
 
-    request.trace.record(Annotation.string('http.uri', request.url))
+    request.trace.record(Annotation.string('http.method', request.method))
+    request.trace.record(Annotation.string('http.url', request.url))
+    request.trace.record(Annotation.string('span.kind', 'client'))
     request.trace.record(Annotation.server_recv())
 
     return request
@@ -31,7 +33,7 @@ def pre_response(resp, req=None):
     if not hasattr(req, 'trace'):
         return resp
 
-    req.trace.record(Annotation.string('http.responsecode',
+    req.trace.record(Annotation.string('http.status_code',
                                        '{0}'.format(getattr(resp, 'status',
                                                             None))))
     req.trace.record(Annotation.server_send())
