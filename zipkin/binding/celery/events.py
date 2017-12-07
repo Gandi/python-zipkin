@@ -30,7 +30,7 @@ def task_send_handler(body, exchange, routing_key, headers, **kwargs):
 def task_prerun_handler(task_id, task, **kwargs):
     request = task.request
 
-    trace = Trace('Task %r' % task.name,
+    trace = Trace('Task execute %r' % task.name,
                   int_or_none(request.headers.get('X-B3-TraceId', None)),
                   int_or_none(request.headers.get('X-B3-SpanId', None)),
                   int_or_none(request.headers.get('X-B3-ParentSpanId', None)),
