@@ -42,7 +42,7 @@ extras_require = {
     'test': tests_require,
 }
 
-setup(name=name,
+setup(name='zk',
       version=VERSION,
       description='zipkin',
       long_description=README + '\n\n' + CHANGES,
