@@ -1,4 +1,5 @@
 from pyramid.events import NewRequest
+from pyramid.settings import aslist
 
 from zipkin.config import configure
 from .pyramidhook import wrap_request
@@ -15,6 +16,6 @@ def includeme(config):
                                          'Check the doc.')
         return
     name = settings.get('zipkin.service_name', config.registry.__name__)
+    to_ignore = aslist(settings.get('zipkin.to_ignore', []))
     endpoint = configure(name, settings)
-
-    config.add_subscriber(wrap_request(endpoint), NewRequest)
+    config.add_subscriber(wrap_request(endpoint, to_ignore), NewRequest)
