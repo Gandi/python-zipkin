@@ -13,7 +13,7 @@ requires = [
     'pyramid_chameleon',
     'pyramid_debugtoolbar',
     'waitress',
-    'zipkin',
+    'zk',
     ]
 
 setup(name='pyramidzipkin',
