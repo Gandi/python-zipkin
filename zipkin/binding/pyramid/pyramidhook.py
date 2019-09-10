@@ -13,7 +13,7 @@ def wrap_request(endpoint):
     def wrap(event):
         request = event.request
         headers = request.headers
-        trace = Trace(request.method + ' ' + request.path_qs,
+        trace = Trace(request.method + ' ' + request.matched_route.pattern,
                       int_or_none(headers.get('X-B3-TraceId', None)),
                       int_or_none(headers.get('X-B3-SpanId', None)),
                       int_or_none(headers.get('X-B3-ParentSpanId', None)),
