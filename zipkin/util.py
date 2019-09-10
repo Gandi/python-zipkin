@@ -4,8 +4,8 @@ import socket
 
 from base64 import b64encode
 from six import text_type
-from thriftpy.protocol import TBinaryProtocol
-from thriftpy.transport import TMemoryBuffer
+from thriftpy2.protocol import TBinaryProtocol
+from thriftpy2.transport import TMemoryBuffer
 
 from .zipkin import zipkincore_thrift as ttypes
 

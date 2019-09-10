@@ -12,7 +12,7 @@ Build-Depends: debhelper (>= 8),
 #              We run tests at build, because of missing dependencies on wheezy
 #              we won't run python3.2 tests.
                python-tox | dpkg, pep8, python-unittest2,
-               python-thriftpy, python3-thriftpy,
+               python-thriftpy2, python3-thriftpy2,
                python-mock, python3-mock,
                python-flask, python3-flask | dpkg,
                python-celery, python3-celery | dpkg,

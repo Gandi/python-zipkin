@@ -14,11 +14,12 @@ with open(os.path.join(here, name, '__init__.py')) as version:
                          re.S).match(version.read()).group(1)
 
 requires = [
-    'thriftpy',
+    'thriftpy2',
     'six',
     ]
 
 tests_require = [
+    'pytest',
     'mock'
     ]
 
@@ -38,7 +39,7 @@ extras_require = {
     'flask': [
         'flask', 'blinker',
     ],
-    'dev': ['pyramid', 'celery', 'requests', 'flask', 'sphinx'],
+    'dev': ['pyramid', 'celery', 'requests', 'flask', 'blinker', 'sphinx'],
     'test': tests_require,
 }
 

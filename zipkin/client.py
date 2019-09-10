@@ -4,11 +4,11 @@ import errno
 import struct
 from io import BytesIO
 
-from thriftpy.transport import TTransportException, TFramedTransportFactory,\
+from thriftpy2.transport import TTransportException, TFramedTransportFactory,\
     TSocket
-from thriftpy.protocol import TBinaryProtocolFactory
-from thriftpy.protocol.binary import write_message_begin, write_val
-from thriftpy.thrift import TClient, TType, TMessageType
+from thriftpy2.protocol import TBinaryProtocolFactory
+from thriftpy2.protocol.binary import write_message_begin, write_val
+from thriftpy2.thrift import TClient, TType, TMessageType
 
 from .util import base64_thrift_formatter
 from .scribe import scribe_thrift
