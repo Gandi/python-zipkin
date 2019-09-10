@@ -1,3 +1,9 @@
+python-zipkin (0.5.6) unstable; urgency=medium
+
+  * use thriftpy2
+
+ -- Arthur Gautier <baloo@gandi.net>  Tue, 10 Sep 2019 08:43:04 +0000
+
 python-zipkin (0.5.5) unstable; urgency=medium
 
   * Comply with opentracing spec
