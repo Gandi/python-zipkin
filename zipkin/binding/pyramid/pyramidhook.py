@@ -27,9 +27,16 @@ def wrap_request(endpoint):
         setattr(request, 'trace', trace)
         local().append(trace)
         trace.record(Annotation.server_recv())
+        request.add_response_callback(add_header_response)
         request.add_finished_callback(log_response(endpoint))
 
     return wrap
+
+
+def add_header_response(request, response):
+    if hasattr(request, 'trace'):
+        trace = request.trace
+        response.headers['Trace-Id'] = str(request.trace.trace_id)
 
 
 def log_response(endpoint):
@@ -39,5 +46,7 @@ def log_response(endpoint):
 
         log(trace)
         local().pop()
+
+        request.response.headers['Trace-Id'] = request.trace.trace_id
 
     return wrap
