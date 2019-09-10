@@ -8,6 +8,13 @@ from .util import uniq_id
 from.zipkin import zipkincore_thrift as constants
 
 
+class Id(int):
+    def __repr__(self):
+        return '<Id %x>' % self
+
+    def __str__(self):
+        return '%x' % self
+
 class Endpoint(object):
     """
     :param ip: C{str} ip address
@@ -112,8 +119,8 @@ class Trace(object):
         assert isinstance(name, six.string_types), \
             "name parameter should be a string"
         self.name = name
-        self.trace_id = trace_id or uniq_id()
-        self.span_id = span_id or uniq_id()
+        self.trace_id = Id(trace_id or uniq_id())
+        self.span_id = Id(span_id or uniq_id())
 
         self.parent_span_id = parent_span_id
 

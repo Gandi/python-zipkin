@@ -158,6 +158,8 @@ class Client(object):
             logger.debug('Zipkin tracing is disabled')
             return
 
+        logger.info('logging trace %s' % trace.trace_id)
+
         unknown = ('Unknown Exception while logging a trace on '
                    'zipkin collector %s:%d' % (cls.host, cls.port))
 
