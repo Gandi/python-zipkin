@@ -11,9 +11,9 @@ log = logging.getLogger(__name__)
 
 
 def filter_url_path(url):
-    return (urlparse(url)
-            ._replace(path='', query=None, fragment='')
-            .geturl())
+    url = urlparse(url)._replace(path='', query=None, fragment='')
+    url = url._replace(netloc=url.netloc.split('@')[-1])
+    return url.geturl()
 
 
 def pre_request(request):
