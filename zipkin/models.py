@@ -152,6 +152,9 @@ class Trace(object):
     def children(self):
         return [y for x in self._children for y in x.children()] + [self]
 
+    def __repr__(self):
+        return '<Trace %s>' % self.trace_id
+
 
 class Annotation(object):
     """
