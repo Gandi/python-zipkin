@@ -2,6 +2,7 @@
 import requests.sessions
 
 from . import events
+from .events import request_adapter
 
 
 def bind():
