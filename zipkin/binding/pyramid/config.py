@@ -1,6 +1,6 @@
 import logging
 
-from pyramid.events import ContextFound
+from pyramid.events import ContextFound, NewRequest
 from pyramid.config import aslist
 
 from zipkin.config import configure
@@ -20,4 +20,8 @@ def includeme(config):
     name = settings.get('zipkin.service_name', default_name)
     endpoint = configure(name, settings)
 
+    # Attach the subscriber twice, ensure we can log request that do not
+    # get through the router
+    config.add_subscriber(wrap_request(endpoint), NewRequest)
     config.add_subscriber(wrap_request(endpoint), ContextFound)
+

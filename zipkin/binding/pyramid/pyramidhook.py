@@ -13,6 +13,10 @@ def wrap_request(endpoint):
     def wrap(event):
         request = event.request
         headers = request.headers
+        had_trace = False
+        if getattr(request, 'trace', None):
+            had_trace = True
+
         trace = Trace(request.method + ' ' + request.matched_route.pattern,
                       int_or_none(headers.get('X-B3-TraceId', None)),
                       int_or_none(headers.get('X-B3-SpanId', None)),
@@ -25,10 +29,20 @@ def wrap_request(endpoint):
         logger.info('new trace %r' % trace.trace_id)
 
         setattr(request, 'trace', trace)
+        if had_trace:
+            # We already had a trace registered for this request, but we got called again
+            # We should be called twice:
+            #  - For every request (NewRequest subscriber)
+            #  - For every request *after* the router (ContextFound)
+            # Just reset the TraceStack, drop the previous trace, and register this one
+            # instead (which got more information)
+            local().reset()
+        else:
+            request.add_response_callback(add_header_response)
+            request.add_finished_callback(log_response(endpoint))
+
         local().append(trace)
         trace.record(Annotation.server_recv())
-        request.add_response_callback(add_header_response)
-        request.add_finished_callback(log_response(endpoint))
 
     return wrap
 
@@ -40,13 +54,12 @@ def add_header_response(request, response):
 
 
 def log_response(endpoint):
-    def wrap(request):
+    def log_response(request):
         trace = request.trace
         trace.record(Annotation.server_send())
+        log.info('reporting trace %s', trace.name)
 
-        log(trace)
-        local().pop()
+        zipkin_log(trace)
+        local().reset()
 
-        request.response.headers['Trace-Id'] = request.trace.trace_id
-
-    return wrap
+    return log_response
