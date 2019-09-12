@@ -3,10 +3,10 @@ import logging
 from zipkin import local
 from zipkin.models import Trace, Annotation
 from zipkin.util import int_or_none
-from zipkin.client import log
+from zipkin.client import log as zipkin_log
 
 
-logger = logging.getLogger(__name__)
+log = logging.getLogger(__name__)
 
 
 def wrap_request(endpoint):
@@ -23,10 +23,10 @@ def wrap_request(endpoint):
                       int_or_none(headers.get('X-B3-ParentSpanId', None)),
                       endpoint=endpoint)
         if 'X-B3-TraceId' not in headers:
-            logger.warn('no trace info from request')
+            log.info('no trace info from request: %s', request.path_qs)
 
         trace.record(Annotation.string('http.path', request.path_qs))
-        logger.info('new trace %r' % trace.trace_id)
+        log.info('new trace %r', trace.trace_id)
 
         setattr(request, 'trace', trace)
         if had_trace:
