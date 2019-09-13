@@ -4,9 +4,13 @@ from zipkin.util import int_or_none
 from zipkin.client import log
 
 
-def wrap_request(endpoint):
+def wrap_request(endpoint, to_ignore=[]):
+
     def wrap(event):
         request = event.request
+        if request.path in to_ignore:
+            return
+
         headers = request.headers
         trace = Trace(request.method + ' ' + request.path_qs,
                       int_or_none(headers.get('X-B3-TraceId', None)),
