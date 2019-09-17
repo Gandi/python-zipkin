@@ -1,8 +1,24 @@
 Changelog
 =========
 
+0.6.1 (2019-09-17)
+------------------
+
+- fixup python2 support
+
+0.6.0 (2019-09-17)
+------------------
+
+- refactor pyramid plugin
+- fix reporter
+
+0.5 (2019-09-10)
+----------------
+
+- Use thriftpy2
+
 0.4 (2015-08-21)
-----------------------
+----------------
 
 -  Flask bindings
 -  xmlrpclib client bindings
