@@ -6,7 +6,7 @@ from threading import Lock
 
 from .util import uniq_id
 from .client import Local
-from.zipkin import zipkincore_thrift as constants
+from .zipkin import zipkincore_thrift as constants
 
 
 class Id(int):
