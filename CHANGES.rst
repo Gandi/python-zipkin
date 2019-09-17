@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.6.2 (2019-09-17)
+------------------
+
+- do not throw warning on configuration mistakes
+
 0.6.1 (2019-09-17)
 ------------------
 

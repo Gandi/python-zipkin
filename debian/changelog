@@ -1,3 +1,9 @@
+python-zipkin (0.6.2) unstable; urgency=medium
+
+  * do not throw warning on configuration mistakes
+
+ -- Arthur Gautier <baloo@gandi.net>  Tue, 17 Sep 2019 15:37:14 +0000
+
 python-zipkin (0.6.1) unstable; urgency=medium
 
   * fixup python2 support
