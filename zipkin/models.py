@@ -9,7 +9,11 @@ from .client import Local
 from .zipkin import zipkincore_thrift as constants
 
 
-class Id(int):
+if not six.PY2:
+    long = int
+
+
+class Id(long):
     def __repr__(self):
         return '<Id %x>' % self
 

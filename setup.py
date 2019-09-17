@@ -39,7 +39,7 @@ extras_require = {
     'flask': [
         'flask', 'blinker',
     ],
-    'dev': ['pyramid', 'celery', 'requests', 'flask', 'blinker', 'sphinx'],
+    'dev': ['pyramid', 'celery', 'requests', 'flask', 'blinker', 'sphinx', 'sqlalchemy'],
     'test': tests_require,
 }
 
