@@ -5,7 +5,16 @@ import socket
 from threading import Lock
 
 from .util import uniq_id
-from.zipkin import zipkincore_thrift as constants
+from .client import Local
+from .zipkin import zipkincore_thrift as constants
+
+
+class Id(int):
+    def __repr__(self):
+        return '<Id %x>' % self
+
+    def __str__(self):
+        return '%x' % self
 
 
 class Endpoint(object):
@@ -18,7 +27,10 @@ class Endpoint(object):
     def __init__(self, service_name, ip=None, port=0):
         try:
             if not ip:
-                ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
+                if Local.local_ip:
+                    ip = Local.local_ip
+                else:
+                    ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
         except socket.gaierror:
             ip = '127.0.0.1'
         self.ip = ip
@@ -112,8 +124,8 @@ class Trace(object):
         assert isinstance(name, six.string_types), \
             "name parameter should be a string"
         self.name = name
-        self.trace_id = trace_id or uniq_id()
-        self.span_id = span_id or uniq_id()
+        self.trace_id = Id(trace_id or uniq_id())
+        self.span_id = Id(span_id or uniq_id())
 
         self.parent_span_id = parent_span_id
 
@@ -144,6 +156,9 @@ class Trace(object):
 
     def children(self):
         return [y for x in self._children for y in x.children()] + [self]
+
+    def __repr__(self):
+        return '<Trace %s>' % self.trace_id
 
 
 class Annotation(object):
