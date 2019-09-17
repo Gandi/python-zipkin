@@ -12,7 +12,7 @@ def includeme(config):
 
     settings = config.registry.settings
     if 'zipkin.collector' not in settings:
-        logging.getLogger(__name__).warn('The plugin zipkin.binding.pyramid '
+        logging.getLogger(__name__).info('The plugin zipkin.binding.pyramid '
                                          'is active but not configured. '
                                          'Check the doc.')
         return
