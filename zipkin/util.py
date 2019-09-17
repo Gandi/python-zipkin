@@ -26,12 +26,9 @@ def uniq_id():
     Create a random 64-bit signed integer appropriate
     for use as trace and span IDs.
 
-    XXX: By experimentation zipkin has trouble recording traces with ids
-    larger than (2 ** 56) - 1
-
     @returns C{int}
     """
-    return random.randint(0, (2 ** 56) - 1)
+    return random.randint(0, (2 ** 64) - 1)
 
 
 def base64_thrift(thrift_obj):
@@ -89,12 +86,21 @@ def base64_thrift_formatter(trace, annotations):
                 binary_annotation_formatter(annotation, host))
 
     thrift_trace = ttypes.Span(
-        trace_id=trace.trace_id,
         name=trace.name,
-        id=trace.span_id,
-        parent_id=trace.parent_span_id,
+        trace_id=u64_as_i64(trace.trace_id),
+        id=u64_as_i64(trace.span_id),
+        parent_id=u64_as_i64(trace.parent_span_id),
         annotations=thrift_annotations,
         binary_annotations=binary_annotations
     )
 
     return base64_thrift(thrift_trace)
+
+
+def u64_as_i64(value):
+    if not value:
+        return value
+
+    data = struct.pack('>Q', value)
+    data = struct.unpack('>q', data)
+    return data[0]
