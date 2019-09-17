@@ -24,6 +24,10 @@ except:
     MSG_NOSIGNAL = 16384  # python2
 
 
+class Local(object):
+    local_ip = None
+
+
 class TNonBlockingSocket(TSocket):
     def _init_sock(self):
         super(TNonBlockingSocket, self)._init_sock()
@@ -38,6 +42,10 @@ class TNonBlockingSocket(TSocket):
 
         addr = self.unix_socket or (self.host, self.port)
         status = self.sock.connect_ex(addr)
+        try:
+            Local.local_ip = self.sock.getsockname()[0]
+        except Exception:
+            pass
 
         if status not in [errno.EINPROGRESS, errno.EALREADY]:
             raise IOError("connection attempt on a non-clean socket",
