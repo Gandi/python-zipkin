@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.6.3 (2019-09-18)
+------------------
+
+- ensure zipkin does not raise when trace id is larger than expected
+
 0.6.2 (2019-09-17)
 ------------------
 
