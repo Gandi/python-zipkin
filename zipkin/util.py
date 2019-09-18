@@ -6,6 +6,7 @@ from base64 import b64encode
 from six import text_type
 from thriftpy2.protocol import TBinaryProtocol
 from thriftpy2.transport import TMemoryBuffer
+from thriftpy2.thrift import TDecodeException
 
 from .zipkin import zipkincore_thrift as ttypes
 
@@ -68,33 +69,36 @@ def base64_thrift_formatter(trace, annotations):
     thrift_annotations = []
     binary_annotations = []
 
-    for annotation in annotations:
-        host = None
-        if annotation.endpoint:
-            host = ttypes.Endpoint(
-                ipv4=ipv4_to_int(annotation.endpoint.ip),
-                port=annotation.endpoint.port,
-                service_name=annotation.endpoint.service_name)
+    try:
+        for annotation in annotations:
+            host = None
+            if annotation.endpoint:
+                host = ttypes.Endpoint(
+                    ipv4=ipv4_to_int(annotation.endpoint.ip),
+                    port=annotation.endpoint.port,
+                    service_name=annotation.endpoint.service_name)
 
-        if annotation.annotation_type == 'timestamp':
-            thrift_annotations.append(ttypes.Annotation(
-                timestamp=annotation.value,
-                value=annotation.name,
-                host=host))
-        else:
-            binary_annotations.append(
-                binary_annotation_formatter(annotation, host))
+            if annotation.annotation_type == 'timestamp':
+                thrift_annotations.append(ttypes.Annotation(
+                    timestamp=annotation.value,
+                    value=annotation.name,
+                    host=host))
+            else:
+                binary_annotations.append(
+                    binary_annotation_formatter(annotation, host))
 
-    thrift_trace = ttypes.Span(
-        name=trace.name,
-        trace_id=u64_as_i64(trace.trace_id),
-        id=u64_as_i64(trace.span_id),
-        parent_id=u64_as_i64(trace.parent_span_id),
-        annotations=thrift_annotations,
-        binary_annotations=binary_annotations
-    )
+        thrift_trace = ttypes.Span(
+            name=trace.name,
+            trace_id=u64_as_i64(trace.trace_id),
+            id=u64_as_i64(trace.span_id),
+            parent_id=u64_as_i64(trace.parent_span_id),
+            annotations=thrift_annotations,
+            binary_annotations=binary_annotations
+        )
 
-    return base64_thrift(thrift_trace)
+        return base64_thrift(thrift_trace)
+    except TDecodeException as e:
+        raise ValueError(e)
 
 
 def u64_as_i64(value):
