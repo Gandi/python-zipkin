@@ -17,3 +17,10 @@ class TestClient(unittest.TestCase):
         data = base64.b64decode(data)
 
         self.assertIn(binascii.unhexlify(_64bit_trace_id), data)
+
+    def test_format_overflow_traceid(self):
+        overflow_trace_id = 'b1119a5629b4cb7fa'
+        trace = Trace('foobar', trace_id=int_or_none(overflow_trace_id))
+        annotations = []
+        with self.assertRaises(ValueError):
+            base64_thrift_formatter(trace, annotations)

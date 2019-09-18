@@ -101,6 +101,9 @@ def u64_as_i64(value):
     if not value:
         return value
 
-    data = struct.pack('>Q', value)
-    data = struct.unpack('>q', data)
-    return data[0]
+    try:
+        data = struct.pack('>Q', value)
+        data = struct.unpack('>q', data)
+        return data[0]
+    except struct.error as e:
+        raise ValueError(e)

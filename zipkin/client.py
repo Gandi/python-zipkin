@@ -173,10 +173,14 @@ class Client(object):
 
         client = cls.get_connection()
         if client:
-            messages = [base64_thrift_formatter(t, t.annotations)
-                        for t in trace.children()]
-            log_entries = [scribe_thrift.LogEntry('zipkin', message)
-                           for message in messages]
+            try:
+                messages = [base64_thrift_formatter(t, t.annotations)
+                            for t in trace.children()]
+                log_entries = [scribe_thrift.LogEntry('zipkin', message)
+                               for message in messages]
+            except ValueError:
+                logger.exception('Error while serializing trace')
+                return
 
             try:
                 client.Log(messages=log_entries)
