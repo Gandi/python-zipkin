@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.6.4 (2019-09-18)
+------------------
+
+- do not throw exception when trying to format to thrift
+
 0.6.3 (2019-09-18)
 ------------------
 

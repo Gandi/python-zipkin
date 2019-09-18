@@ -1,3 +1,9 @@
+python-zipkin (0.6.4) unstable; urgency=medium
+
+  * do not throw exception when trying to send to thrift
+
+ -- Arthur Gautier <baloo@gandi.net>  Wed, 18 Sep 2019 14:59:13 +0000
+
 python-zipkin (0.6.3) unstable; urgency=medium
 
   * ensure zipkin does not raise when trace id is larger than expected
