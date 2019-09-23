@@ -100,7 +100,7 @@ class tween_factory(object):
             def __init__(self, request):
                 self.request = request
 
-        wrap_request(self.registry)(FakeEvent(request))
+        wrap_request(self.registry)(ZipkinTweenEvent(request))
         response = self.handler(request)
 
         return response
