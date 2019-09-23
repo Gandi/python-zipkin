@@ -1,7 +1,12 @@
 Changelog
 =========
 
-0.6.6 (2019-09-23)
+0.6.8 (2019-09-23)
+------------------
+
+- pyramid: fixup tests if zipkin not configured
+
+0.6.7 (2019-09-23)
 ------------------
 
 - pyramid: fixup tweenview init

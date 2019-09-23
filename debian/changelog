@@ -1,3 +1,9 @@
+python-zipkin (0.6.8) unstable; urgency=medium
+
+  * pyramid: fixup tests if zipkin is not configured
+
+ -- Arthur Gautier <baloo@gandi.net>  Mon, 23 Sep 2019 13:55:50 +0000
+
 python-zipkin (0.6.7) unstable; urgency=medium
 
   * pyramid: fixup tweenview
