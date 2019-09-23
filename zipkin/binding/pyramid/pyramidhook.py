@@ -100,7 +100,10 @@ class tween_factory(object):
             def __init__(self, request):
                 self.request = request
 
-        wrap_request(self.registry)(ZipkinTweenEvent(request))
+        zipkin_wrapper = wrap_request(self.registry)
+        if zipkin_wrapper:
+            zipkin_wrapper(ZipkinTweenEvent(request))
+
         response = self.handler(request)
 
         return response

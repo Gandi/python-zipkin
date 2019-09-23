@@ -12,4 +12,6 @@ def includeme(config):
     # we proceed through the stack (after authentication, after router, ...)
     config.add_tween('zipkin.binding.pyramid.pyramidhook.tween_factory',
                      under=INGRESS)
-    config.add_subscriber(wrap_request(config.registry), ContextFound)
+    zipkin_wrapper = wrap_request(config.registry)
+    if zipkin_wrapper:
+        config.add_subscriber(zipkin_wrapper, ContextFound)
