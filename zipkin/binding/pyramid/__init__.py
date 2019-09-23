@@ -1,4 +1,4 @@
-from zipkin import __version__
+from zipkin import __version__  # noqa
 
 from .config import includeme
 

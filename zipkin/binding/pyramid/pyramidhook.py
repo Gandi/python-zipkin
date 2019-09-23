@@ -4,12 +4,23 @@ from zipkin import local
 from zipkin.models import Trace, Annotation
 from zipkin.util import int_or_none
 from zipkin.client import log as zipkin_log
+from zipkin.config import configure
 
 
 log = logging.getLogger(__name__)
 
 
-def wrap_request(endpoint):
+def wrap_request(registry):
+    settings = registry.settings
+    if 'zipkin.collector' not in settings:
+        logging.getLogger(__name__).info('The plugin zipkin.binding.pyramid '
+                                         'is active but not configured. '
+                                         'Check the doc.')
+        return
+    default_name = registry.__name__
+    name = settings.get('zipkin.service_name', default_name)
+    endpoint = configure(name, settings)
+
     def wrap(event):
         request = event.request
         headers = request.headers
@@ -22,11 +33,15 @@ def wrap_request(endpoint):
             # we only get a matched route if we've gone through the router.
             trace_name = request.matched_route.pattern
 
-        trace = Trace(request.method + ' ' + trace_name,
-                      int_or_none(headers.get('X-B3-TraceId', None)),
-                      int_or_none(headers.get('X-B3-SpanId', None)),
-                      int_or_none(headers.get('X-B3-ParentSpanId', None)),
-                      endpoint=endpoint)
+        if had_trace:
+            request.trace.name = request.method + ' ' + trace_name
+            trace = request.trace
+        else:
+            trace = Trace(request.method + ' ' + trace_name,
+                          int_or_none(headers.get('X-B3-TraceId', None)),
+                          int_or_none(headers.get('X-B3-SpanId', None)),
+                          int_or_none(headers.get('X-B3-ParentSpanId', None)),
+                          endpoint=endpoint)
 
         if 'X-B3-TraceId' not in headers:
             log.info('no trace info from request: %s', request.path_qs)
@@ -40,12 +55,13 @@ def wrap_request(endpoint):
 
         setattr(request, 'trace', trace)
         if had_trace:
-            # We already had a trace registered for this request, but we got called again
+            # We already had a trace registered for this request, but we got
+            # called again
             # We should be called twice:
-            #  - For every request (NewRequest subscriber)
+            #  - For every request (tween view)
             #  - For every request *after* the router (ContextFound)
-            # Just reset the TraceStack, drop the previous trace, and register this one
-            # instead (which got more information)
+            # Just reset the TraceStack, drop the previous trace, and register
+            # this one instead (which got more information)
             local().reset()
         else:
             request.add_response_callback(add_header_response)
@@ -59,7 +75,6 @@ def wrap_request(endpoint):
 
 def add_header_response(request, response):
     if hasattr(request, 'trace'):
-        trace = request.trace
         response.headers['Trace-Id'] = str(request.trace.trace_id)
 
 
@@ -73,3 +88,19 @@ def log_response(endpoint):
         local().reset()
 
     return log_response
+
+
+class tween_factory(object):
+    def __init__(self, handler, registry):
+        self.handler = handler
+        self.registry = registry
+
+    def __call__(self, request):
+        class ZipkinTweenEvent(object):
+            def __init__(self, request):
+                self.request = request
+
+        wrap_request(self.registry)(FakeEvent(request))
+        response = self.handler(request)
+
+        return response
