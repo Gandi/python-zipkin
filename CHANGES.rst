@@ -4,6 +4,11 @@ Changelog
 0.6.6 (2019-09-23)
 ------------------
 
+- pyramid: fixup tweenview init
+
+0.6.6 (2019-09-23)
+------------------
+
 - pyramid: register trace in a tweenview
 
 0.6.5 (2019-09-17)
