@@ -6,5 +6,7 @@ from .events import request_adapter
 
 
 def bind():
-    old_init = requests.sessions.Session.__init__
-    requests.sessions.Session.__init__ = events.session_init(old_init)
+    if not getattr(requests.sessions.Session, '_zipkin_patched', False):
+        old_init = requests.sessions.Session.__init__
+        requests.sessions.Session.__init__ = events.session_init(old_init)
+        requests.sessions.Session._zipkin_patched = True
