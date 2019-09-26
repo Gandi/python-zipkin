@@ -1,3 +1,9 @@
+python-zipkin (0.6.9) unstable; urgency=medium
+
+  * requests: fixup infinite recursions
+
+ -- Arthur Gautier <baloo@gandi.net>  Thu, 26 Sep 2019 13:49:53 +0000
+
 python-zipkin (0.6.8) unstable; urgency=medium
 
   * pyramid: fixup tests if zipkin is not configured
