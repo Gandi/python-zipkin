@@ -14,7 +14,7 @@ def before_cursor_execute(conn, cursor, statement, parameters, context,
         parent_trace = get_current_trace()
 
         if not parent_trace:
-            log.error('No parent found while tracing SQL')
+            log.warn('No parent found while tracing SQL')
             return
 
         try:
