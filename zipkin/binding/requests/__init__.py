@@ -2,7 +2,7 @@ try:
     from .impl import bind, request_adapter
 except ImportError as exc:
     import logging
-    logging.getLogger(__name__).warn('requests not installed')
+    logging.getLogger(__name__).warning('requests not installed')
 
     def bind():
         pass
