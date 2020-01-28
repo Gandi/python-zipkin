@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.6.10 (2020-01-28)
+-------------------
+
+- update logging level to avoid errors logs for SQL query outside http context
+- remove deprecated log.warn
+
 0.6.9 (2019-09-26)
 ------------------
 
