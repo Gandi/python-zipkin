@@ -29,6 +29,7 @@ from zipkin.config import configure
 
 def get_settings():
     return {
+        "zipkin.transport": getattr(settings, "ZIPKIN_TRANSPORT", "scribe"),
         "zipkin.collector": settings.ZIPKIN_COLLECTOR,
         "zipkin.service_name": settings.ZIPKIN_SERVICE_NAME,
         "zipkin.env": settings.ZIPKIN_ENV,
