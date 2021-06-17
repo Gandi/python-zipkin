@@ -25,6 +25,9 @@ if sys.version_info[:2] < (2, 7):
     tests_require.append("unittest2")
 
 extras_require = {
+    "django": [
+        "django",
+    ],
     "pyramid": [
         "pyramid",
     ],
@@ -34,6 +37,9 @@ extras_require = {
     "requests": [
         "requests",
     ],
+    "psycopg2": [
+        "psycopg2-binary",
+    ],
     "flask": [
         "flask",
         "blinker",
@@ -41,7 +47,9 @@ extras_require = {
     "dev": [
         "blinker",
         "celery",
+        "django",
         "flask",
+        "psycopg2-binary",
         "pyramid",
         "requests",
         "sphinx",
