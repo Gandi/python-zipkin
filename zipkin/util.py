@@ -115,7 +115,6 @@ def u64_as_i64(value):
         raise ValueError(e)
 
 
-
 def span_to_bytes(thrift_span):
     """
     Returns a TBinaryProtocol encoded Thrift span.
