@@ -57,7 +57,6 @@ def trace_req(trace_name):
 
 class TraceCursor(_cursor):
     """A cursor that logs queries using its connection logging facilities."""
-    count = 1
 
     @trace_req("SQL")
     def execute(self, query, vars=None):
