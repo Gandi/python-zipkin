@@ -1,3 +1,5 @@
+from functools import wraps
+
 from .models import Annotation
 from .thread import local
 
@@ -11,6 +13,7 @@ def trace(name):
         return trace(name.__name__)(name)
 
     def func_decorator(func):
+        @wraps(func)
         def wrapper(*args, **kwargs):
 
             try:
