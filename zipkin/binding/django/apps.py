@@ -28,12 +28,18 @@ from zipkin.config import configure
 
 
 def get_settings():
-    return {
+    zk_settings = {
         "zipkin.transport": getattr(settings, "ZIPKIN_TRANSPORT", "scribe"),
         "zipkin.collector": settings.ZIPKIN_COLLECTOR,
         "zipkin.service_name": settings.ZIPKIN_SERVICE_NAME,
         "zipkin.env": settings.ZIPKIN_ENV,
     }
+    if hasattr(settings, "ZIPKIN_COLLECTOR_PORT"):
+        zk_settings["zipkin.collector.port"] = settings.ZIPKIN_COLLECTOR_PORT
+    if hasattr(settings, "ZIPKIN_COLLECTOR_SCHEME"):
+        zk_settings["zipkin.collector.scheme"] = settings.ZIPKIN_COLLECTOR_SCHEME
+
+    return zk_settings
 
 
 class ZipkinConfig(AppConfig):

@@ -15,6 +15,8 @@ class Client(object):
         cls.host = settings.get(prefix + 'collector')
         if prefix + 'collector.port' in settings:
             cls.port = int(settings[prefix + 'collector.port'])
+        if prefix + 'collector.scheme' in settings:
+            cls.scheme = settings[prefix + 'collector.scheme']
 
         cls._url = '%s://%s:%s/api/v1/spans' % (
             cls.scheme, cls.host, cls.port
