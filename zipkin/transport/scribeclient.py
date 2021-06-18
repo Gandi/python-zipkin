@@ -214,7 +214,7 @@ class Client(object):
                 cls._client = None
                 logger.exception(unknown)
         else:
-            logger.warn("Can't log zipkin trace, not connected")
+            logger.warning("Can't log zipkin trace, not connected")
 
     @classmethod
     def disconnect(cls):
