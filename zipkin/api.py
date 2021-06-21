@@ -45,20 +45,8 @@ def trace(name):
     def func_decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-
-            try:
-                try:
-                    recording = True
-                    trace = local().child(name)
-                    annotation = Annotation.server_recv()
-                    trace.record(annotation)
-                except Exception:
-                    recording = False
+            with Trace(name):
                 return func(*args, **kwargs)
-            finally:
-                if recording:
-                    trace.record(Annotation.server_send())
-                    local().pop()
 
         return wrapper
 
