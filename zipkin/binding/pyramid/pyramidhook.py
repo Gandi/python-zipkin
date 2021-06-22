@@ -12,20 +12,22 @@ log = logging.getLogger(__name__)
 
 def wrap_request(registry):
     settings = registry.settings
-    if 'zipkin.collector' not in settings:
-        logging.getLogger(__name__).info('The plugin zipkin.binding.pyramid '
-                                         'is active but not configured. '
-                                         'Check the doc.')
+    if "zipkin.collector" not in settings:
+        logging.getLogger(__name__).info(
+            "The plugin zipkin.binding.pyramid "
+            "is active but not configured. "
+            "Check the doc."
+        )
         return
     default_name = registry.__name__
-    name = settings.get('zipkin.service_name', default_name)
+    name = settings.get("zipkin.service_name", default_name)
     endpoint = configure(name, settings)
 
     def wrap(event):
         request = event.request
         headers = request.headers
         had_trace = False
-        if getattr(request, 'trace', None):
+        if getattr(request, "trace", None):
             had_trace = True
 
         trace_name = request.path_qs
@@ -34,26 +36,28 @@ def wrap_request(registry):
             trace_name = request.matched_route.pattern
 
         if had_trace:
-            request.trace.name = request.method + ' ' + trace_name
+            request.trace.name = request.method + " " + trace_name
             trace = request.trace
         else:
-            trace = Trace(request.method + ' ' + trace_name,
-                          int_or_none(headers.get('X-B3-TraceId', None)),
-                          int_or_none(headers.get('X-B3-SpanId', None)),
-                          int_or_none(headers.get('X-B3-ParentSpanId', None)),
-                          endpoint=endpoint)
+            trace = Trace(
+                request.method + " " + trace_name,
+                int_or_none(headers.get("X-B3-TraceId", None)),
+                int_or_none(headers.get("X-B3-SpanId", None)),
+                int_or_none(headers.get("X-B3-ParentSpanId", None)),
+                endpoint=endpoint,
+            )
 
-        if 'X-B3-TraceId' not in headers:
-            log.info('no trace info from request: %s', request.path_qs)
+        if "X-B3-TraceId" not in headers:
+            log.info("no trace info from request: %s", request.path_qs)
 
         if request.matchdict:  # matchdict maybe none if no route is registered
             for k, v in request.matchdict.items():
-                trace.record(Annotation.string('route.param.%s' % k, v))
+                trace.record(Annotation.string("route.param.%s" % k, v))
 
-        trace.record(Annotation.string('http.path', request.path_qs))
-        log.info('new trace %r', trace.trace_id)
+        trace.record(Annotation.string("http.path", request.path_qs))
+        log.info("new trace %r", trace.trace_id)
 
-        setattr(request, 'trace', trace)
+        setattr(request, "trace", trace)
         if had_trace:
             # We already had a trace registered for this request, but we got
             # called again
@@ -74,15 +78,15 @@ def wrap_request(registry):
 
 
 def add_header_response(request, response):
-    if hasattr(request, 'trace'):
-        response.headers['Trace-Id'] = str(request.trace.trace_id)
+    if hasattr(request, "trace"):
+        response.headers["Trace-Id"] = str(request.trace.trace_id)
 
 
 def log_response(endpoint):
     def log_response(request):
         trace = request.trace
         trace.record(Annotation.server_send())
-        log.info('reporting trace %s', trace.name)
+        log.info("reporting trace %s", trace.name)
 
         zipkin_log(trace)
         local().reset()

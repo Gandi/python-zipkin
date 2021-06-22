@@ -40,18 +40,19 @@ def trace_req(trace_name):
                         ]
 
                     trace.record(Annotation.string("db.parameters", repr(params)))
-                    trace.record(Annotation.string('span.kind', 'client'))
+                    trace.record(Annotation.string("span.kind", "client"))
                     trace.record(Annotation.server_send())
 
             try:
                 fn(cursor, statement, vars)
             finally:
                 if trace:
-                    status = 'OK' if sys.exc_info()[0] is None else 'KO'
-                    trace.record(Annotation.string('status', status))
+                    status = "OK" if sys.exc_info()[0] is None else "KO"
+                    trace.record(Annotation.string("status", status))
                     trace.record(Annotation.server_recv())
 
         return wrapped
+
     return wrapper
 
 

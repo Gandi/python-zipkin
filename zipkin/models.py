@@ -15,10 +15,10 @@ if not six.PY2:
 
 class Id(long):
     def __repr__(self):
-        return '<Id %x>' % self
+        return "<Id %x>" % self
 
     def __str__(self):
-        return '%x' % self
+        return "%x" % self
 
 
 class Endpoint(object):
@@ -36,10 +36,11 @@ class Endpoint(object):
                 else:
                     ip = socket.gethostbyname_ex(socket.gethostname())[2][0]
         except socket.gaierror:
-            ip = '127.0.0.1'
+            ip = "127.0.0.1"
         self.ip = ip
         self.port = port
         self.service_name = service_name
+
 
 # TODO
 # __eq__, __ne__, __repr__
@@ -54,10 +55,10 @@ class TraceStack(object):
         self.lock = Lock()
 
     def child(self, name, endpoint=None):
-        assert isinstance(name, six.string_types), \
-            "name parameter should be a string"
-        assert isinstance(endpoint, Endpoint) or endpoint is None, \
-            "endpoint parameter should be an Endpoint"
+        assert isinstance(name, six.string_types), "name parameter should be a string"
+        assert (
+            isinstance(endpoint, Endpoint) or endpoint is None
+        ), "endpoint parameter should be an Endpoint"
 
         try:
             trace = self.cur.child(name, endpoint)
@@ -77,8 +78,7 @@ class TraceStack(object):
             self.lock.release()
 
     def replace(self, trace):
-        assert isinstance(trace, Trace), \
-            "trace parameter should be of type Trace"
+        assert isinstance(trace, Trace), "trace parameter should be of type Trace"
 
         try:
             self.lock.acquire()
@@ -88,8 +88,7 @@ class TraceStack(object):
             self.lock.release()
 
     def append(self, trace):
-        assert isinstance(trace, Trace), \
-            "trace parameter should be of type Trace"
+        assert isinstance(trace, Trace), "trace parameter should be of type Trace"
 
         try:
             self.lock.acquire()
@@ -123,10 +122,10 @@ class TraceStack(object):
 
 
 class Trace(object):
-    def __init__(self, name, trace_id=None, span_id=None,
-                 parent_span_id=None, endpoint=None):
-        assert isinstance(name, six.string_types), \
-            "name parameter should be a string"
+    def __init__(
+        self, name, trace_id=None, span_id=None, parent_span_id=None, endpoint=None
+    ):
+        assert isinstance(name, six.string_types), "name parameter should be a string"
         self.name = name
         self.trace_id = Id(trace_id or uniq_id())
         self.span_id = Id(span_id or uniq_id())
@@ -149,8 +148,9 @@ class Trace(object):
             e = endpoint
         else:
             e = self._endpoint
-        trace = self.__class__(name, trace_id=self.trace_id,
-                               parent_span_id=self.span_id, endpoint=e)
+        trace = self.__class__(
+            name, trace_id=self.trace_id, parent_span_id=self.span_id, endpoint=e
+        )
         return trace
 
     def child(self, name, endpoint=None):
@@ -162,7 +162,7 @@ class Trace(object):
         return [y for x in self._children for y in x.children()] + [self]
 
     def __repr__(self):
-        return '<Trace %s>' % self.trace_id
+        return "<Trace %s>" % self.trace_id
 
 
 class Annotation(object):
@@ -177,6 +177,7 @@ class Annotation(object):
     :param endpoint: An optional L{IEndpoint} provider to associate with
         this annotation or C{None}
     """
+
     def __init__(self, name, value, annotation_type, endpoint=None):
         self.name = name
         self.value = value
@@ -188,7 +189,7 @@ class Annotation(object):
         if timestamp is None:
             timestamp = math.trunc(time.time() * 1000 * 1000)
 
-        return cls(name, timestamp, 'timestamp')
+        return cls(name, timestamp, "timestamp")
 
     @classmethod
     def server_send(cls, timestamp=None):
@@ -208,8 +209,8 @@ class Annotation(object):
 
     @classmethod
     def string(cls, name, value):
-        return cls(name, value, 'string')
+        return cls(name, value, "string")
 
     @classmethod
     def bytes(cls, name, value):
-        return cls(name, value, 'bytes')
+        return cls(name, value, "bytes")

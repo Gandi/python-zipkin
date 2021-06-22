@@ -15,7 +15,7 @@ def configure(settings, prefix):
     driver = importlib.import_module(
         "zipkin.transport.{}client".format(transport),
     )
-    Client = driver.Client  #noqa
+    Client = driver.Client  # noqa
     Client.configure(settings, prefix)
 
 

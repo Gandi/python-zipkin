@@ -21,7 +21,7 @@ def int_or_none(val):
 
 
 def hex_str(n):
-    return '%0.16x' % (n,)
+    return "%0.16x" % (n,)
 
 
 def uniq_id():
@@ -44,13 +44,13 @@ def base64_thrift(thrift_obj):
 
 
 def ipv4_to_int(ipv4):
-    return struct.unpack('!i', socket.inet_aton(ipv4))[0]
+    return struct.unpack("!i", socket.inet_aton(ipv4))[0]
 
 
 def binary_annotation_formatter(annotation, host=None):
     annotation_types = {
-        'string': ttypes.AnnotationType.STRING,
-        'bytes': ttypes.AnnotationType.BYTES,
+        "string": ttypes.AnnotationType.STRING,
+        "bytes": ttypes.AnnotationType.BYTES,
     }
 
     annotation_type = annotation_types[annotation.annotation_type]
@@ -58,13 +58,9 @@ def binary_annotation_formatter(annotation, host=None):
     value = annotation.value
 
     if isinstance(value, text_type):
-        value = value.encode('utf-8')
+        value = value.encode("utf-8")
 
-    return ttypes.BinaryAnnotation(
-        annotation.name,
-        value,
-        annotation_type,
-        host)
+    return ttypes.BinaryAnnotation(annotation.name, value, annotation_type, host)
 
 
 def base64_thrift_formatter(trace, annotations):
@@ -78,16 +74,17 @@ def base64_thrift_formatter(trace, annotations):
                 host = ttypes.Endpoint(
                     ipv4=ipv4_to_int(annotation.endpoint.ip),
                     port=annotation.endpoint.port,
-                    service_name=annotation.endpoint.service_name)
+                    service_name=annotation.endpoint.service_name,
+                )
 
-            if annotation.annotation_type == 'timestamp':
-                thrift_annotations.append(ttypes.Annotation(
-                    timestamp=annotation.value,
-                    value=annotation.name,
-                    host=host))
+            if annotation.annotation_type == "timestamp":
+                thrift_annotations.append(
+                    ttypes.Annotation(
+                        timestamp=annotation.value, value=annotation.name, host=host
+                    )
+                )
             else:
-                binary_annotations.append(
-                    binary_annotation_formatter(annotation, host))
+                binary_annotations.append(binary_annotation_formatter(annotation, host))
 
         thrift_trace = ttypes.Span(
             name=trace.name,
@@ -95,7 +92,7 @@ def base64_thrift_formatter(trace, annotations):
             id=u64_as_i64(trace.span_id),
             parent_id=u64_as_i64(trace.parent_span_id),
             annotations=thrift_annotations,
-            binary_annotations=binary_annotations
+            binary_annotations=binary_annotations,
         )
 
         return base64_thrift(thrift_trace)
@@ -108,8 +105,8 @@ def u64_as_i64(value):
         return value
 
     try:
-        data = struct.pack('>Q', value)
-        data = struct.unpack('>q', data)
+        data = struct.pack(">Q", value)
+        data = struct.unpack(">q", data)
         return data[0]
     except struct.error as e:
         raise ValueError(e)
@@ -148,16 +145,17 @@ def base64_thrift_formatter_many(parent_trace):
                 host = ttypes.Endpoint(
                     ipv4=ipv4_to_int(annotation.endpoint.ip),
                     port=annotation.endpoint.port,
-                    service_name=annotation.endpoint.service_name)
+                    service_name=annotation.endpoint.service_name,
+                )
 
-            if annotation.annotation_type == 'timestamp':
-                thrift_annotations.append(ttypes.Annotation(
-                    timestamp=annotation.value,
-                    value=annotation.name,
-                    host=host))
+            if annotation.annotation_type == "timestamp":
+                thrift_annotations.append(
+                    ttypes.Annotation(
+                        timestamp=annotation.value, value=annotation.name, host=host
+                    )
+                )
             else:
-                binary_annotations.append(
-                    binary_annotation_formatter(annotation, host))
+                binary_annotations.append(binary_annotation_formatter(annotation, host))
 
         thrift_trace = ttypes.Span(
             name=trace.name,
@@ -165,7 +163,7 @@ def base64_thrift_formatter_many(parent_trace):
             id=u64_as_i64(trace.span_id),
             parent_id=u64_as_i64(trace.parent_span_id),
             annotations=thrift_annotations,
-            binary_annotations=binary_annotations
+            binary_annotations=binary_annotations,
         )
 
         transport.write(span_to_bytes(thrift_trace))

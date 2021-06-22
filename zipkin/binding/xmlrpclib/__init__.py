@@ -1,3 +1,3 @@
 from .impl import bind
 
-__all__ = ['bind']
+__all__ = ["bind"]

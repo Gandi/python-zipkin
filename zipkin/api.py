@@ -37,7 +37,7 @@ class Trace(object):
 
 
 def trace(name):
-    """ A decorator that trace the decorated function """
+    """A decorator that trace the decorated function"""
 
     if hasattr(name, "__call__"):
         return trace(name.__name__)(name)

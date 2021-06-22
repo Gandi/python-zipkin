@@ -14,7 +14,7 @@ def bind(app, endpoint=None):
 
     events.endpoint = endpoint
 
-    log.info('Attaching zipkin to Flask signals')
+    log.info("Attaching zipkin to Flask signals")
     request_started.connect(events.pre_request, app)
     request_finished.connect(events.pre_response, app)
-    log.info('zipkin signals attached')
+    log.info("zipkin signals attached")

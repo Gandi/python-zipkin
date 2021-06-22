@@ -26,13 +26,14 @@ class XMLRPClibAppTestCase(unittest.TestCase):
     server = None
 
     def setUp(self):
-        endpoint = zipkin.configure('My test xmlrpclib application',
-                                    {'zipkin.collector': 'localhost',
-                                     'zipkin.service_name': 'my app'})
+        endpoint = zipkin.configure(
+            "My test xmlrpclib application",
+            {"zipkin.collector": "localhost", "zipkin.service_name": "my app"},
+        )
 
         bind_zipkin(endpoint)
 
-        server = SimpleXMLRPCServer(('localhost', SERVERPORT), allow_none=True)
+        server = SimpleXMLRPCServer(("localhost", SERVERPORT), allow_none=True)
         server.register_function(sleep)
 
         self.server = mp.Process(target=server.serve_forever)
@@ -45,8 +46,7 @@ class XMLRPClibAppTestCase(unittest.TestCase):
             self.server.terminate()
 
     def test_sleep(self):
-        client = ServerProxy('http://localhost:%d/RPC2' % SERVERPORT,
-                             allow_none=True)
+        client = ServerProxy("http://localhost:%d/RPC2" % SERVERPORT, allow_none=True)
 
         start = time()
         client.sleep(0.1)
@@ -58,6 +58,8 @@ class XMLRPClibAppTestCase(unittest.TestCase):
         self.assertGreater(delta, 0.101)
 
         traces = DummyClient._client.messages
-        self.assertEqual(len(traces), 1,
-                         "There should be one trace for "
-                         "the request just processed")
+        self.assertEqual(
+            len(traces),
+            1,
+            "There should be one trace for " "the request just processed",
+        )

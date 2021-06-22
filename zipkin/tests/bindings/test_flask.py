@@ -34,22 +34,23 @@ class FlaskApp(Flask):
         self.setup_zipkin()
 
     def setup_zipkin(self):
-        endpoint = zipkin.configure('My test flask application',
-                                    {'zipkin.collector': 'localhost',
-                                     'zipkin.service_name': 'my app'})
+        endpoint = zipkin.configure(
+            "My test flask application",
+            {"zipkin.collector": "localhost", "zipkin.service_name": "my app"},
+        )
         bind_zipkin(self, endpoint)
 
     def setup_url(self):
-        self.add_url_rule('/', methods=['GET'],
-                          view_func=Home.as_view(str('home')))
-        self.add_url_rule('/interdit', methods=['GET'],
-                          view_func=Forbidden.as_view(str('proibito')))
+        self.add_url_rule("/", methods=["GET"], view_func=Home.as_view(str("home")))
+        self.add_url_rule(
+            "/interdit", methods=["GET"], view_func=Forbidden.as_view(str("proibito"))
+        )
 
 
 class FlaskAppTestCase(unittest.TestCase):
-    def __init__(self, methodName='runTest'):
+    def __init__(self, methodName="runTest"):
         super(FlaskAppTestCase, self).__init__(methodName)
-        self.logger = patch('zipkin.binding.flask.events.log', dummy_log)
+        self.logger = patch("zipkin.binding.flask.events.log", dummy_log)
 
     def setUp(self):
         self.logger.start()
@@ -62,24 +63,26 @@ class FlaskAppTestCase(unittest.TestCase):
         self.logger.stop()
 
     def test_home(self):
-        ret = self.client.get('/')
+        ret = self.client.get("/")
         self.assertEqual(ret.data, b"Guten Morgen!")
 
         traces = DummyClient._client.messages
-        self.assertEqual(len(traces), 1,
-                         "There should be one trace for "
-                         "the request just processed")
+        self.assertEqual(
+            len(traces),
+            1,
+            "There should be one trace for " "the request just processed",
+        )
 
 
 class FlaskAppRealServerTestCase(unittest.TestCase):
-    def __init__(self, methodName='runTest'):
+    def __init__(self, methodName="runTest"):
         super(FlaskAppRealServerTestCase, self).__init__(methodName)
-        self.logger = patch('zipkin.binding.flask.events.log', dummy_log)
+        self.logger = patch("zipkin.binding.flask.events.log", dummy_log)
         bind_requests()
 
     def setUp(self):
-        self.http_proxy = os.environ.pop('http_proxy', None)
-        self.https_proxy = os.environ.pop('https_proxy', None)
+        self.http_proxy = os.environ.pop("http_proxy", None)
+        self.https_proxy = os.environ.pop("https_proxy", None)
 
         self.logger.start()
         DummyClient.reset()
@@ -92,32 +95,37 @@ class FlaskAppRealServerTestCase(unittest.TestCase):
         self.app.stop()
 
         if self.http_proxy:
-            os.environ['http_proxy'] = self.http_proxy
+            os.environ["http_proxy"] = self.http_proxy
         if self.https_proxy:
-            os.environ['https_proxy'] = self.https_proxy
+            os.environ["https_proxy"] = self.https_proxy
 
     def test_home_no_headers(self):
         ret = requests.get(self.app.url)
         self.assertEqual(ret.text, "Guten Morgen!")
 
         traces = DummyClient._client.messages
-        self.assertEqual(len(traces), 1,
-                         "There should be one trace for "
-                         "the request just processed")
+        self.assertEqual(
+            len(traces),
+            1,
+            "There should be one trace for " "the request just processed",
+        )
 
     def test_home_headers(self):
-        endpoint = Endpoint('127.0.0.1', 0, 'RequestsWithContextTestCase')
-        trace = Trace('flask',
-                      None, None, None,
-                      endpoint=endpoint)
+        endpoint = Endpoint("127.0.0.1", 0, "RequestsWithContextTestCase")
+        trace = Trace("flask", None, None, None, endpoint=endpoint)
         local().replace(trace)
 
         ret = requests.get(self.app.url)
         self.assertEqual(ret.text, "Guten Morgen!")
 
         traces = DummyClient._client.messages
-        self.assertEqual(len(traces), 1,
-                         "There should be one trace for "
-                         "the request just processed")
-        self.assertEqual(traces[0].trace_id, trace.trace_id,
-                         "TraceId should be read from client if present")
+        self.assertEqual(
+            len(traces),
+            1,
+            "There should be one trace for " "the request just processed",
+        )
+        self.assertEqual(
+            traces[0].trace_id,
+            trace.trace_id,
+            "TraceId should be read from client if present",
+        )

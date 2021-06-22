@@ -11,7 +11,7 @@ with open(os.path.join(here, "CHANGES.rst")) as f:
     CHANGES = f.read()
 with open(os.path.join(here, name, "__init__.py")) as version:
     VERSION = (
-        re.compile(r".*__version__ = '(.*?)'", re.S).match(version.read()).group(1)
+        re.compile(r'.*__version__ = "(.*?)"', re.S).match(version.read()).group(1)
     )
 
 requires = [

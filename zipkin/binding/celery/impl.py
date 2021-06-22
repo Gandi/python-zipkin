@@ -14,8 +14,8 @@ def bind(endpoint=None):
 
     events.endpoint = endpoint
 
-    log.info('Attaching zipkin to celery signals')
+    log.info("Attaching zipkin to celery signals")
     before_task_publish.connect(events.task_send_handler)
     task_prerun.connect(events.task_prerun_handler)
     task_postrun.connect(events.task_postrun_handler)
-    log.info('zipkin signals attached')
+    log.info("zipkin signals attached")

@@ -14,8 +14,8 @@ except ImportError:
     try:
         import requests.packages
 
-        if 'six.moves' in sys.modules:
-            del sys.modules['six.moves']
+        if "six.moves" in sys.modules:
+            del sys.modules["six.moves"]
             dirname = os.path.dirname(inspect.getfile(requests.packages))
             if dirname in sys.path:
                 sys.path.remove(dirname)
