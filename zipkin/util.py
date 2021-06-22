@@ -5,6 +5,8 @@ import socket
 from base64 import b64encode
 from six import text_type
 from thriftpy2.protocol import TBinaryProtocol
+from thriftpy2.thrift import TType
+from thriftpy2.protocol.binary import write_list_begin
 from thriftpy2.transport import TMemoryBuffer
 from thriftpy2.thrift import TDecodeException
 
@@ -111,3 +113,61 @@ def u64_as_i64(value):
         return data[0]
     except struct.error as e:
         raise ValueError(e)
+
+
+def span_to_bytes(thrift_span):
+    """
+    Returns a TBinaryProtocol encoded Thrift span.
+
+    :param thrift_span: thrift object to encode.
+    :returns: thrift object in TBinaryProtocol format bytes.
+    """
+    transport = TMemoryBuffer()
+    protocol = TBinaryProtocol(transport)
+    thrift_span.write(protocol)
+
+    return bytes(transport.getvalue())
+
+
+def base64_thrift_formatter_many(parent_trace):
+    """
+    Returns a TBinaryProtocol encoded list of Thrift objects.
+    :param binary_thrift_obj_list: list of TBinaryProtocol objects to encode.
+    :returns: bynary object representing the encoded list.
+    """
+    traces = list(parent_trace.children())
+    transport = TMemoryBuffer()
+    write_list_begin(transport, TType.STRUCT, len(traces))
+    for trace in traces:
+        thrift_annotations = []
+        binary_annotations = []
+
+        for annotation in trace.annotations:
+            host = None
+            if annotation.endpoint:
+                host = ttypes.Endpoint(
+                    ipv4=ipv4_to_int(annotation.endpoint.ip),
+                    port=annotation.endpoint.port,
+                    service_name=annotation.endpoint.service_name)
+
+            if annotation.annotation_type == 'timestamp':
+                thrift_annotations.append(ttypes.Annotation(
+                    timestamp=annotation.value,
+                    value=annotation.name,
+                    host=host))
+            else:
+                binary_annotations.append(
+                    binary_annotation_formatter(annotation, host))
+
+        thrift_trace = ttypes.Span(
+            name=trace.name,
+            trace_id=u64_as_i64(trace.trace_id),
+            id=u64_as_i64(trace.span_id),
+            parent_id=u64_as_i64(trace.parent_span_id),
+            annotations=thrift_annotations,
+            binary_annotations=binary_annotations
+        )
+
+        transport.write(span_to_bytes(thrift_trace))
+
+    return bytes(transport.getvalue())

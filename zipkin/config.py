@@ -1,7 +1,7 @@
 import logging
 
 from .models import Endpoint
-from .client import Client
+from . import client
 
 log = logging.getLogger(__name__)
 
@@ -11,7 +11,7 @@ def configure(name, settings, prefix='zipkin.',
     """ Include the zipkin definitions """
 
     endpoint = Endpoint(name)
-    Client.configure(settings, prefix=prefix)
+    client.configure(settings, prefix=prefix)
 
     # Install in libs here
     if use_requests:

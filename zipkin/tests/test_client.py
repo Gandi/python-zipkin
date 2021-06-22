@@ -3,7 +3,7 @@ import threading
 import socket
 import select
 
-from ..client import Client
+from ..transport.scribeclient import Client
 from ..models import Trace, Annotation
 
 
