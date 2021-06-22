@@ -5,6 +5,6 @@ from .config import configure
 from .thread import local  # XXX remove me from here
 
 
-__version__ = "0.6.10"
+__version__ = "0.7.1"
 
 __all__ = ["trace", "Trace", "get_current_trace", "stack_trace", "configure", "local"]

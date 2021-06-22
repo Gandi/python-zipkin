@@ -1,6 +1,15 @@
 Changelog
 =========
 
+0.7.1  (2021-06-22)
+-------------------
+
+- Add a Trace context manager for more flexibility
+- Add django support using a django middleware and app.
+- Add psycopg2 cursor support to trace sql query
+- Add an http client (synchronous) to push trace, client transport is
+  configurable.
+
 0.6.10 (2020-01-28)
 -------------------
 
