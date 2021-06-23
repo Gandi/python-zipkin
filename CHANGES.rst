@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.7.2  (2021-06-22)
+-------------------
+
+- Make the scribe async/sync socket configurable
+- Add a middleware/setting for Django to track only slow query 
+
 0.7.1  (2021-06-22)
 -------------------
 
