@@ -110,9 +110,10 @@ def make_client(
     port,
     proto_factory=TBinaryProtocolFactory(),
     trans_factory=TFramedTransportFactory(),
+    socket_factory=TNonBlockingSocket,
 ):
 
-    socket = TNonBlockingSocket(host, port)
+    socket = socket_factory(host, port)
     transport = trans_factory.get_transport(socket)
     protocol = proto_factory.get_protocol(transport)
     transport.open()
@@ -125,12 +126,16 @@ class Client(object):
     port = 9410
     _client = None
     _connection_attempts = 0
+    _socket_factory = TNonBlockingSocket
 
     @classmethod
     def configure(cls, settings, prefix):
         cls.host = settings.get(prefix + "collector")
         if prefix + "collector.port" in settings:
             cls.port = int(settings[prefix + "collector.port"])
+        if prefix + "transport.async" in settings:
+            if settings[prefix + "transport.async"].lower() == "false":
+                cls._socket_factory = TSocket
 
     @classmethod
     def get_connection(cls):
@@ -149,7 +154,10 @@ class Client(object):
 
             try:
                 cls._client = make_client(
-                    scribe_thrift.Scribe, host=cls.host, port=cls.port
+                    scribe_thrift.Scribe,
+                    host=cls.host,
+                    port=cls.port,
+                    socket_factory=cls._socket_factory,
                 )
 
                 cls._connection_attempts = 0
