@@ -38,6 +38,8 @@ def get_settings():
         zk_settings["zipkin.collector.port"] = settings.ZIPKIN_COLLECTOR_PORT
     if hasattr(settings, "ZIPKIN_COLLECTOR_SCHEME"):
         zk_settings["zipkin.collector.scheme"] = settings.ZIPKIN_COLLECTOR_SCHEME
+    if hasattr(settings, "ZIPKIN_TRANSPORT_ASYNC"):
+        zk_settings["zipkin.transport.async"] = settings.ZIPKIN_TRANSPORT_ASYNC
 
     return zk_settings
 
