@@ -1,4 +1,6 @@
 """Middleware for django."""
+import time
+
 from django.conf import settings
 
 from zipkin import local
@@ -66,6 +68,38 @@ def zk_middleware(get_response):
         add_header_response(response)
         log_response(trace, response)
 
+        return response
+
+    return middleware
+
+
+def zk_slow_trace_middleware(get_response):
+    """
+    Zipkin Middleware to trace slow query only added in the django settings.
+
+    Usage:
+
+    ::
+        # Only send trace of query that take more than 1.5 seconds
+        ZIPKIN_SLOW_LOG_DURATION_EXCEED = 1.5
+
+        MIDDLEWARE = [
+            "zipkin.binding.django.middleware.zk_slow_trace_middleware",
+            ...
+        ]
+    """
+
+    def middleware(request):
+        # Code to be executed for each request before
+        # the view (and later middleware) are called.
+        start = time.time()
+        trace = init_trace(request)
+
+        response = get_response(request)
+        duration = time.time() - start
+        if duration >= settings.ZIPKIN_SLOW_LOG_DURATION_EXCEED:
+            add_header_response(response)
+            log_response(trace, response)
         return response
 
     return middleware
