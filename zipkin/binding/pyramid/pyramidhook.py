@@ -3,7 +3,7 @@ import time
 import logging
 
 from pyramid.tweens import INGRESS
-
+from pyramid.settings import aslist
 
 from zipkin import local
 from zipkin.api import stack_trace
@@ -24,7 +24,15 @@ class AllTraceTweenView(object):
     def configure(cls, settings):
         default_name = "Registry"  # Keep compat with `registry.__name__` ?
         name = settings.get("zipkin.service_name", default_name)
-        cls.endpoint = configure_zk(name, settings)
+
+        bindings = aslist(settings.get("zipkin.bindings", "requests celery xmlrpclib"))
+        cls.endpoint = configure_zk(
+            name,
+            settings,
+            use_requests="requests" in bindings,
+            use_celery="celery" in bindings,
+            use_xmlrpclib="xmlrpclib" in bindings,
+        )
 
     def __init__(self, handler, registry):
         self.handler = handler
