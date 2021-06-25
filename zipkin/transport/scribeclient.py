@@ -111,9 +111,10 @@ def make_client(
     proto_factory=TBinaryProtocolFactory(),
     trans_factory=TFramedTransportFactory(),
     socket_factory=TNonBlockingSocket,
+    socket_timeout=1000,
 ):
 
-    socket = socket_factory(host, port)
+    socket = socket_factory(host, port, socket_timeout=socket_timeout)
     transport = trans_factory.get_transport(socket)
     protocol = proto_factory.get_protocol(transport)
     transport.open()
@@ -127,6 +128,7 @@ class Client(object):
     _client = None
     _connection_attempts = 0
     _socket_factory = TNonBlockingSocket
+    _socket_timeout = 1000
 
     @classmethod
     def configure(cls, settings, prefix):
@@ -136,6 +138,9 @@ class Client(object):
         if prefix + "transport.async" in settings:
             if settings[prefix + "transport.async"].lower() == "false":
                 cls._socket_factory = TSocket
+
+        if prefix + "transport.socket_timeout" in settings:
+            cls._socket_timeout = int(settings[prefix + "transport.socket_timeout"])
 
     @classmethod
     def get_connection(cls):
@@ -158,6 +163,7 @@ class Client(object):
                     host=cls.host,
                     port=cls.port,
                     socket_factory=cls._socket_factory,
+                    socket_timeout=cls._socket_timeout,
                 )
 
                 cls._connection_attempts = 0
