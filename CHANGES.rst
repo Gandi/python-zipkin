@@ -1,6 +1,15 @@
 Changelog
 =========
 
+
+0.8.0  (2021-06-25)
+-------------------
+
+- Rewrite Pyramid binding.
+- Add settings for pyramid to log slow queries only with a configurable time.
+- Add a setting to list what library should be traced.
+- Make socket timout configurable and change default timeout to 1 second.
+
 0.7.2  (2021-06-22)
 -------------------
 
