@@ -76,8 +76,6 @@ class AllTraceTweenView(object):
 
             response.headers["Trace-Id"] = str(self.trace.trace_id)
             zipkin_log(self.trace)
-            local().reset()
-            self.trace = None
 
     def __call__(self, request):
         self.track_start_request(request)
@@ -87,6 +85,8 @@ class AllTraceTweenView(object):
         finally:
             # request.response in case an exception is raised ?
             self.track_end_request(request, response or request.response)
+            local().reset()
+            self.trace = None
         return response or request.response
 
 
