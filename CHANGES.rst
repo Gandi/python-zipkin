@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.8.1  (2021-06-25)
+-------------------
+
+- Hotfix Pyramid slow query logger that does not cleanup the trace stack.
+
 
 0.8.0  (2021-06-25)
 -------------------
