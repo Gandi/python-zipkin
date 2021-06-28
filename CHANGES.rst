@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.8.2  (2021-06-28)
+-------------------
+
+- Ensure we never raise an exception if we cannot collect a trace,
+  avoid side effect to clients.
+
 0.8.1  (2021-06-25)
 -------------------
 

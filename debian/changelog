@@ -1,4 +1,10 @@
-python-zipkin (0.8.0) unstable; urgency=medium
+python-zipkin (0.8.2) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Guillaume Gauvrit <guillaume@gandi.net>  Mon, 28 Jun 2021 09:07:30 +0100
+
+python-zipkin (0.8.1) unstable; urgency=medium
 
   * New upstream release
 
