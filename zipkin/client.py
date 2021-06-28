@@ -20,4 +20,7 @@ def configure(settings, prefix):
 
 
 def log(trace):
-    Client.log(trace)
+    try:
+        Client.log(trace)
+    except Exception as err:
+        log.error("Unexpected Exception while sending trace: %s", err)
