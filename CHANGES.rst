@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.8.3  (2021-06-28)
+-------------------
+
+- Fix issue for django on slow request logs. The reset of the stack must
+  be done on every requests.
+
 0.8.2  (2021-06-28)
 -------------------
 
