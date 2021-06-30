@@ -1,5 +1,6 @@
 """Middleware for django."""
 import time
+import logging
 
 from django.conf import settings
 
@@ -10,6 +11,9 @@ from zipkin.util import int_or_none
 from zipkin.client import log as zipkin_log
 
 from .apps import ZipkinConfig
+
+
+log = logging.getLogger(__name__)
 
 
 def init_trace(request):
@@ -34,8 +38,10 @@ def log_response(trace, response):
         Annotation.string("http.responsecode", "{0}".format(response.status_code))
     )
     trace.record(Annotation.server_send())
-    zipkin_log(trace)
-    local().reset()
+    try:
+        zipkin_log(trace)
+    except Exception as err:
+        log.error("Error while sending trace: %s", trace)
 
 
 def add_header_response(response):
@@ -67,7 +73,7 @@ def zk_middleware(get_response):
 
         add_header_response(response)
         log_response(trace, response)
-
+        local().reset()
         return response
 
     return middleware
@@ -100,6 +106,7 @@ def zk_slow_trace_middleware(get_response):
         if duration >= settings.ZIPKIN_SLOW_LOG_DURATION_EXCEED:
             add_header_response(response)
             log_response(trace, response)
+        local().reset()
         return response
 
     return middleware
