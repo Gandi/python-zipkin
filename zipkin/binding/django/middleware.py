@@ -35,7 +35,6 @@ def log_response(trace, response):
     )
     trace.record(Annotation.server_send())
     zipkin_log(trace)
-    local().reset()
 
 
 def add_header_response(response):
@@ -67,7 +66,7 @@ def zk_middleware(get_response):
 
         add_header_response(response)
         log_response(trace, response)
-
+        local().reset()
         return response
 
     return middleware
@@ -100,6 +99,7 @@ def zk_slow_trace_middleware(get_response):
         if duration >= settings.ZIPKIN_SLOW_LOG_DURATION_EXCEED:
             add_header_response(response)
             log_response(trace, response)
+        local().reset()
         return response
 
     return middleware
