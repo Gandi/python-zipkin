@@ -42,8 +42,8 @@ class Client(object):
                 timeout=cls._socket_timeout,
             )
         except ConnectTimeout:
-            logger.error("Connect timeout while connecting to zipking collector")
+            logger.error("Connect timeout while connecting to zipkin collector")
         except ConnectionError:
-            logger.error("Cannot connect to zipking collector")
+            logger.error("Cannot connect to zipkin collector")
         except Timeout:
             logger.error("Timeout while posting trace")
