@@ -45,7 +45,9 @@ def log_response(trace, response):
 
 
 def add_header_response(response):
-    response["Trace-Id"] = str(get_current_trace().trace_id)
+    trace = get_current_trace()
+    if trace:
+        response["Trace-Id"] = str(trace.trace_id)
 
 
 def zk_middleware(get_response):
