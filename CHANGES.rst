@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.8.4  (2021-06-28)
+0.8.4  (2021-07-21)
 -------------------
 
 - Fix django issue on missing trace.
