@@ -105,8 +105,8 @@ def zk_slow_trace_middleware(get_response):
 
         response = get_response(request)
         duration = time.time() - start
+        add_header_response(response)
         if duration >= settings.ZIPKIN_SLOW_LOG_DURATION_EXCEED:
-            add_header_response(response)
             log_response(trace, response)
         local().reset()
         return response
