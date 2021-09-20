@@ -125,6 +125,8 @@ class SlowQueryTweenView(AllTraceTweenView):
             duration = time.time() - self.start
             if duration > self.max_duration:
                 super(SlowQueryTweenView, self).track_end_request(request, response)
+            else:
+                response.headers["Trace-Id"] = str(self.trace.trace_id)
 
 
 def includeme(config):
