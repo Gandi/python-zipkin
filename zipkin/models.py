@@ -54,6 +54,11 @@ class TraceStack(object):
         # Locking is required, as stack and cur should mutate at the same time
         self.lock = Lock()
 
+    @property
+    def current(self):
+        """Get the current trace"""
+        return self.cur
+
     def child(self, name, endpoint=None):
         assert isinstance(name, six.string_types), "name parameter should be a string"
         assert (
@@ -115,10 +120,6 @@ class TraceStack(object):
             return trace
         finally:
             self.lock.release()
-
-    @property
-    def current(self):
-        return self.cur
 
 
 class Trace(object):
