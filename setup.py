@@ -19,10 +19,8 @@ requires = [
     "six",
 ]
 
-tests_require = ["pytest", "mock"]
+tests_require = ["pytest"]
 
-if sys.version_info[:2] < (2, 7):
-    tests_require.append("unittest2")
 
 extras_require = {
     "django": [

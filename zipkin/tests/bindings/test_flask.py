@@ -2,7 +2,7 @@ from __future__ import unicode_literals, absolute_import
 
 import os
 import unittest
-from mock import patch
+from unittest.mock import patch
 
 from flask import Flask
 from flask.views import View
