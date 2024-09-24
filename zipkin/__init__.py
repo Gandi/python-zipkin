@@ -7,6 +7,6 @@ from .thread import local  # XXX remove me from here
 
 install_logger_factory()
 
-__version__ = "0.8.4"
+__version__ = "0.9.1"
 
 __all__ = ["trace", "Trace", "get_current_trace", "stack_trace", "configure", "local"]
