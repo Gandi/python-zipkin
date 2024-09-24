@@ -1,8 +1,14 @@
 Changelog
 =========
 
+0.9.2  (2024-09-24)
+-------------------
+- Remove python2.7 support.
+- Migrate packaging to poetry.
+
 0.9.1  (2024-09-24)
 -------------------
+- Remove python2.6 support.
 - Add trace_id and span_id in the python logging context.
 
 0.8.4  (2021-07-21)
