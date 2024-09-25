@@ -224,7 +224,6 @@ try:
     def request_adapter(adapter):
         return ZipkinAdapterProxy(adapter)
 
-
 except ImportError:
     # requests < 1.0.0
     def request_adapter(adapter):

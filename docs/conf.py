@@ -45,8 +45,8 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = u"python-zipkin"
-copyright = u"2015, Gandi"
+project = "python-zipkin"
+copyright = "2015, Gandi"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -214,7 +214,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    ("index", "python-zipkin.tex", u"python-zipkin Documentation", u"Gandi", "manual"),
+    ("index", "python-zipkin.tex", "python-zipkin Documentation", "Gandi", "manual"),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -242,7 +242,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [("index", "python-zipkin", u"python-zipkin Documentation", [u"Gandi"], 1)]
+man_pages = [("index", "python-zipkin", "python-zipkin Documentation", ["Gandi"], 1)]
 
 # If true, show URL addresses after external links.
 # man_show_urls = False
@@ -257,8 +257,8 @@ texinfo_documents = [
     (
         "index",
         "python-zipkin",
-        u"python-zipkin Documentation",
-        u"Gandi",
+        "python-zipkin Documentation",
+        "Gandi",
         "python-zipkin",
         "One line description of project.",
         "Miscellaneous",

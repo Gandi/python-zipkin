@@ -31,7 +31,7 @@ def uniq_id():
 
     @returns C{int}
     """
-    return random.randint(0, (2 ** 64) - 1)
+    return random.randint(0, (2**64) - 1)
 
 
 def base64_thrift(thrift_obj):

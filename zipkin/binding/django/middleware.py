@@ -1,4 +1,5 @@
 """Middleware for django."""
+
 import time
 import logging
 
