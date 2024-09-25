@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.9.3  (2024-09-25)
+-------------------
+- Don't update the log factory, user must install it manually.
+
 0.9.2  (2024-09-24)
 -------------------
 - Remove python2.7 support.
@@ -46,7 +50,7 @@ Changelog
 -------------------
 
 - Make the scribe async/sync socket configurable
-- Add a middleware/setting for Django to track only slow query 
+- Add a middleware/setting for Django to track only slow query
 
 0.7.1  (2021-06-22)
 -------------------
