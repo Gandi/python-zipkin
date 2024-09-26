@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # python-zipkin documentation build configuration file, created by
 # sphinx-quickstart on Fri Feb 13 10:17:38 2015.
 #
