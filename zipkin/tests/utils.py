@@ -29,7 +29,7 @@ class FlaskApp(Flask):
 httpbin_app = FlaskApp()
 
 
-class ScribeClient(object):
+class ScribeClient:
     def __init__(self):
         self.messages = []
 
@@ -37,7 +37,7 @@ class ScribeClient(object):
         self.messages.append(messages)
 
 
-class DummyClient(object):
+class DummyClient:
     _client = ScribeClient()
 
     @classmethod

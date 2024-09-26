@@ -21,7 +21,7 @@ class Id(long):
         return "%x" % self
 
 
-class Endpoint(object):
+class Endpoint:
     """
     :param ip: C{str} ip address
     :param port: C{int} port number
@@ -46,7 +46,7 @@ class Endpoint(object):
 # __eq__, __ne__, __repr__
 
 
-class TraceStack(object):
+class TraceStack:
     def __init__(self):
         self.stack = []
         self.cur = None
@@ -122,7 +122,7 @@ class TraceStack(object):
             self.lock.release()
 
 
-class Trace(object):
+class Trace:
     def __init__(
         self, name, trace_id=None, span_id=None, parent_span_id=None, endpoint=None
     ):
@@ -166,7 +166,7 @@ class Trace(object):
         return "<Trace %s>" % self.trace_id
 
 
-class Annotation(object):
+class Annotation:
     """
     :param name: C{str} name of this annotation.
 

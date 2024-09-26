@@ -1,7 +1,7 @@
 import importlib
 
 
-class Local(object):
+class Local:
     local_ip = None
 
 

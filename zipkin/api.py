@@ -6,7 +6,7 @@ from .thread import local
 __all__ = ["trace", "get_current_trace"]
 
 
-class Trace(object):
+class Trace:
     def __init__(self, name):
         self.name = name
         self.recording = None
