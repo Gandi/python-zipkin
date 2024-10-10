@@ -1,5 +1,4 @@
 import math
-import six
 import time
 import socket
 from threading import Lock
@@ -9,11 +8,7 @@ from .client import Local
 from .zipkin import zipkincore_thrift as constants
 
 
-if not six.PY2:
-    long = int
-
-
-class Id(long):
+class Id(int):
     def __repr__(self):
         return "<Id %x>" % self
 
@@ -21,7 +16,7 @@ class Id(long):
         return "%x" % self
 
 
-class Endpoint(object):
+class Endpoint:
     """
     :param ip: C{str} ip address
     :param port: C{int} port number
@@ -46,7 +41,7 @@ class Endpoint(object):
 # __eq__, __ne__, __repr__
 
 
-class TraceStack(object):
+class TraceStack:
     def __init__(self):
         self.stack = []
         self.cur = None
@@ -60,7 +55,7 @@ class TraceStack(object):
         return self.cur
 
     def child(self, name, endpoint=None):
-        assert isinstance(name, six.string_types), "name parameter should be a string"
+        assert isinstance(name, (bytes, str)), "name parameter should be a string"
         assert (
             isinstance(endpoint, Endpoint) or endpoint is None
         ), "endpoint parameter should be an Endpoint"
@@ -122,11 +117,11 @@ class TraceStack(object):
             self.lock.release()
 
 
-class Trace(object):
+class Trace:
     def __init__(
         self, name, trace_id=None, span_id=None, parent_span_id=None, endpoint=None
     ):
-        assert isinstance(name, six.string_types), "name parameter should be a string"
+        assert isinstance(name, (bytes, str)), "name parameter should be a string"
         self.name = name
         self.trace_id = Id(trace_id or uniq_id())
         self.span_id = Id(span_id or uniq_id())
@@ -166,7 +161,7 @@ class Trace(object):
         return "<Trace %s>" % self.trace_id
 
 
-class Annotation(object):
+class Annotation:
     """
     :param name: C{str} name of this annotation.
 

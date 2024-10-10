@@ -16,7 +16,7 @@ from zipkin.config import configure as configure_zk
 log = logging.getLogger(__name__)
 
 
-class AllTraceTweenView(object):
+class AllTraceTweenView:
 
     endpoint = None
 
