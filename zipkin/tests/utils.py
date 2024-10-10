@@ -5,7 +5,7 @@ import threading
 import json
 from wsgiref.simple_server import make_server, WSGIRequestHandler
 from wsgiref.handlers import SimpleHandler
-from six.moves.urllib.parse import urljoin
+from urllib.parse import urljoin
 from flask import Flask, request
 from flask.views import View
 

@@ -1,6 +1,6 @@
 import logging
+from urllib.parse import urlparse
 
-from six.moves.urllib.parse import urlparse
 
 from zipkin import local
 from zipkin.models import Annotation
