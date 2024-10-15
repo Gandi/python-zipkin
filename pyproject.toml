@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zk"
-version = "0.9.3"
+version = "0.9.4"
 description = "zipkin"
 authors = ["Gandi <feedback@gandi.net>"]
 license = "Apache"

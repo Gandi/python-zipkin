@@ -1,3 +1,7 @@
+0.9.3 - Released on 2024-10-15
+------------------------------
+* Update depenencies 
+
 Changelog
 =========
 
