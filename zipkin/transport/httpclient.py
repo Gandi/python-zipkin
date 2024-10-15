@@ -9,7 +9,7 @@ from ..util import base64_thrift_formatter_many
 logger = logging.getLogger(__name__)
 
 
-class Client(object):
+class Client:
 
     host = None
     port = 9411

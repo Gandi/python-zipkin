@@ -3,7 +3,6 @@ import struct
 import socket
 
 from base64 import b64encode
-from six import text_type
 from thriftpy2.protocol import TBinaryProtocol
 from thriftpy2.thrift import TType
 from thriftpy2.protocol.binary import write_list_begin
@@ -57,7 +56,7 @@ def binary_annotation_formatter(annotation, host=None):
 
     value = annotation.value
 
-    if isinstance(value, text_type):
+    if isinstance(value, str):
         value = value.encode("utf-8")
 
     return ttypes.BinaryAnnotation(annotation.name, value, annotation_type, host)

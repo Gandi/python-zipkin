@@ -1,6 +1,6 @@
 import logging
+from urllib.parse import urlparse
 
-from six.moves.urllib.parse import urlparse
 
 from zipkin import local
 from zipkin.models import Annotation
@@ -55,7 +55,7 @@ def pre_response(resp, req=None):
     return resp
 
 
-class Proxy(object):
+class Proxy:
     __slots__ = ["_obj", "__weakref__"]
 
     def __init__(self, obj):

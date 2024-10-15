@@ -12,14 +12,13 @@ packages = [{include = "zipkin"}]
 [tool.poetry.dependencies]
 python = "^3.7"
 thriftpy2 = "^0.5.2"
-six = "^1.16.0"
 setuptools = [
     { python = "<3.11", version = "^64.0.0" },
     { python = ">=3.11", version = "^74.0.0" },
 ]
 django = [
-    { python = "<3.11", version = "3.2.25", optional = true },
-    { python = ">=3.11", version = "^5.4.0", optional = true },
+    { python = "<3.11", version = "^3.2.25", optional = true },
+    { python = ">=3.11", version = "^5.1.1", optional = true },
 ]
 flask = [
     { python = "<3.11", version = "^2.0.0", optional = true },
@@ -66,8 +65,8 @@ requests = [
     { python = ">=3.11", version = "^2.32.0" },
 ]
 django = [
-    { python = "<3.11", version = "3.2.25" },
-    { python = ">=3.11", version = "^5.4.0" },
+    { python = "<3.11", version = "^3.2.25" },
+    { python = ">=3.11", version = "^5.1.1" },
 ]
 
 [build-system]

@@ -3,8 +3,8 @@ from __future__ import absolute_import
 import unittest
 import multiprocessing as mp
 
-from six.moves.xmlrpc_server import SimpleXMLRPCServer
-from six.moves.xmlrpc_client import ServerProxy
+from xmlrpc.server import SimpleXMLRPCServer
+from xmlrpc.client import ServerProxy
 
 from time import time, sleep
 

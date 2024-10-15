@@ -121,7 +121,7 @@ def make_client(
     return TClient(service, protocol)
 
 
-class Client(object):
+class Client:
 
     host = None
     port = 9410

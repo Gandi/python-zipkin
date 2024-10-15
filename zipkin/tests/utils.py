@@ -5,7 +5,7 @@ import threading
 import json
 from wsgiref.simple_server import make_server, WSGIRequestHandler
 from wsgiref.handlers import SimpleHandler
-from six.moves.urllib.parse import urljoin
+from urllib.parse import urljoin
 from flask import Flask, request
 from flask.views import View
 
@@ -29,7 +29,7 @@ class FlaskApp(Flask):
 httpbin_app = FlaskApp()
 
 
-class ScribeClient(object):
+class ScribeClient:
     def __init__(self):
         self.messages = []
 
@@ -37,7 +37,7 @@ class ScribeClient(object):
         self.messages.append(messages)
 
 
-class DummyClient(object):
+class DummyClient:
     _client = ScribeClient()
 
     @classmethod
